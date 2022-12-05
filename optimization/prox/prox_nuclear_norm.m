@@ -27,7 +27,8 @@ if(length(size(x)) == 2 || (isa(x,'tensor') && length(tensor.size) == 2))
     % result = Ur Sr Vr', where Ur = U(:, 1:r), Sr = diag(sigma), Vr = Vr(:, 1:r)
     result = U(:, 1:r) * diag(sigma) * V(:,1:r)';
 else
-    fprintf('error, please check your input is a two way array');
+    fprintf('error, please check your input is a two way array\n');
+    result=zeros(size(x));
 end
 
 end
