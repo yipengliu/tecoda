@@ -1,4 +1,4 @@
-function x = prox_l1(b,lambda)
+function x = prox_l1(x,lambda)
 
 % The proximal operator of the l1 norm
 % Input b can be scalar, vector or multidimensional matrix
@@ -12,6 +12,7 @@ function x = prox_l1(b,lambda)
 %     x: the output shape is the same as b
 % 
 
-x = max(0,b-lambda)+min(0,b+lambda);
+%x = max(0,x-lambda)+min(0,x+lambda);
+ x = sign(x).*max(0,abs(x)-lambda); 
 
 end
