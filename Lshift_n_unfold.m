@@ -1,4 +1,4 @@
-function M = Lshift_n_unfold(varargin)
+function M = l_shifting_n_unfolding(varargin)
     % wait to modifieds
 
     % default mode:arrange first mode as the row and in little-end order
@@ -7,10 +7,21 @@ function M = Lshift_n_unfold(varargin)
        if nargin == 1
             shift = 1;
             mode_row = 1;
+            order = 'l';
+       elseif nargin == 2 
+            if varargin{2}=='L' || varargin{2}=='B'
+                shift = 1;
+                mode_row = 1;
+                order = varargin{2};
+            else
+                error("Please input correct shift(number) and mode(number)!")
+            end
        elseif nargin == 3
-            if isnumeric(varargin{2:3}) || ~isnumeric(varargin{3})
+            if ~isnumeric(varargin{2}) || ~isnumeric(varargin{3})
                 error("Shift and mode must be number!")
             else
+                order = 'L';
+
                 % Consider Shift
                 if length(shift) >= 1
                     error("Shift must be a number!")

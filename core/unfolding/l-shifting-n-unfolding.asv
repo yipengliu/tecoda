@@ -8,9 +8,11 @@ function M = Lshift_n_unfold(varargin)
             shift = 1;
             mode_row = 1;
        elseif nargin == 3
-            if isnumeric(varargin{2:3}) || ~isnumeric(varargin{3})
+            if ~isnumeric(varargin{2}) || ~isnumeric(varargin{3})
                 error("Shift and mode must be number!")
             else
+                order = 'L';
+
                 % Consider Shift
                 if length(shift) >= 1
                     error("Shift must be a number!")
