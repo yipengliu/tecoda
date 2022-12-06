@@ -12,16 +12,25 @@ function M = k_unfold(varargin)
 % Examples
 %   
     % Input must be Tensor class
-    if nargin == 0 || ~isa(varargin{1},'tensor')
-        error("Input tensor must be tensor class data")
+    if nargin == 0
+        error("Input tensor must not be empty!")
+    end
+    if isa(varargin{1},'tensor')
+        T = varargin{1}.data;
+    elseif isnumeric(varargin{1})
+        T = varargin{1};
+    else
+        error("Input tensor must be tensor class data or high dimension matrix!")
     end
     T = varargin{1};
+    sz = size(T);
+    ndim = length(sz);
 
     if nargin == 1
-        modeN = 1;
+        modeK = 1;
     elseif nargin == 2 
-        if isnumeric(varargin{2}) && varargin{2} == int8(varargin{2}) && min(a)>0 && max(a)<=TU.ndim
-            modeN = int8(varargin{2});
+        if isnumeric(varargin{2}) && varargin{2} == int8(varargin{2}) && min(varargin{2})>0 && max(varargin{2})<=ndim
+            modeK = int8(varargin{2});
         else
             error("Please input correct mode vector(integer between 1 and ndim)!")
         end
@@ -30,9 +39,9 @@ function M = k_unfold(varargin)
     end
 
     % Litte endian order
-    mode_row = prod(1:k);
-    mode_col = prod(k+1:T.ndim);
+    mode_row = prod(sz(1:modeK));
+    mode_col = prod(sz(modeK+1:ndim));
 
-    M = reshape(TU,mode_row,mode_col);
+    M = reshape(T,mode_row,mode_col);
    
 end

@@ -1,0 +1,157 @@
+%test_unfold()
+%   test unfold function and unfold integration function
+%% test mode_n_unfold()
+disp('%%%%%%%%test mode_n_unfold%%%%%%%%');
+% example1
+%test mode_n_unfold(T)
+disp('%%%%%%%%%%%%Exp 1%%%%%%%%%%%%%%%%%');
+disp('%%%%%%test mode_n_unfold(T) with high order matrix input%%%%%%');
+T = rand(2,4,6,8);
+% disp('T=');
+% disp(T)
+M = mode_n_unfold(T);
+fprintf("Default mode is 1.\n")
+fprintf("T(2,3,4,5) is %d, and the corresponding element in the formal order unfolding matrix is %d\n",T(2,3,4,5),M(2,3+(4-1)*4+(5-1)*4*6));
+
+disp('%%%%%%test mode_n_unfold(T) with Tensor class input%%%%%%');
+T = tensor(rand(2,4,6,8));
+% disp('T=');
+% disp(T)
+M = mode_n_unfold(T);
+fprintf("Default mode is 1.\n")
+fprintf("T(2,3,4,5) is %d, and the corresponding element in the formal order unfolding matrix is %d\n",T(2,3,4,5),M(2,3+(4-1)*4+(5-1)*4*6));
+
+%example 2
+%test mode_n_unfold(T,mode)
+disp('%%%%%%%%%%%%Exp 2%%%%%%%%%%%%%%%%%');
+disp('%%%%%%test mode_n_unfold(T,mode) with high order matrix input%%%%%%');
+T = rand(2,4,6,8);
+% disp('T=');
+% disp(T)
+mode = 2;
+fprintf('mode=%d\n',mode);
+M = mode_n_unfold(T,2);
+fprintf("T(2,2,3,4) is %d, and the corresponding element in the formal order unfolding matrix is %d\n",T(2,2,3,4),M(2,2+(3-1)*2+(4-1)*2*6));
+M = mode_n_unfold(T,2,'i');
+fprintf("T(2,2,3,4) is %d, and the corresponding element in the inverse order unfolding matrix is %d\n",T(2,2,3,4),M(2,3+(4-1)*6+(2-1)*6*8));
+
+disp('%%%%%%test mode_n_unfold(T,mode,order) with Tensor class input%%%%%%');
+T = rand(2,4,6,8);
+% disp('T=');
+% disp(T)
+mode = 2;
+fprintf('mode=%d\n',mode);
+fprintf("T(2,2,3,4) is %d, and the corresponding element in the unfolding tensor is %d\n",T(2,2,3,4),M(2,2+(3-1)*2+(4-1)*2*6));
+M = mode_n_unfold(T,2,'i');
+fprintf("T(2,2,3,4) is %d, and the corresponding element in the formal order unfolding matrix is %d\n",T(2,2,3,4),M(2,3+(4-1)*6+(2-1)*6*8));
+M = mode_n_unfold(T,2,'i');
+fprintf("T(2,2,3,4) is %d, and the corresponding element in the inverse order unfolding matrix is %d\n",T(2,2,3,4),M(2,3+(4-1)*6+(2-1)*6*8));
+
+%% test mode_n1n2_unfold()
+disp('%%%%%%test mode_n1n2_unfold()%%%%%');
+
+%example 1
+%test mode_n1n2_unfold(T)
+disp('%%%%%%%%%%%%Exp 1%%%%%%%%%%%%%%%%%');
+disp('%%%%%%test mode_n1n2_unfold(T) with high order matrix input%%%%%%');
+T = rand(2,4,6,8,10);
+% disp('T=');
+% disp(T)
+disp("mode=1.\n")
+TU = mode_n1n2_unfold(T);
+fprintf("T(2,3,5,7,9) is %d, and the corresponding element unfolding matrix is %d in mode-1 unfolding.\n",T(2,3,5,7,9),TU(2,3+(5-1)*4+(7-1)*4*6+(9-1)*4*6*8));
+
+disp('%%%%%%test mode_n1n2_unfold(T,n) with tensor class input%%%%%%');
+T = tensor(rand(2,4,6,8,10));
+% disp('T=');
+% disp(T)
+TU = mode_n1n2_unfold(T);
+fprintf("T(2,3,5,7,9) is %d, and the corresponding element unfolding matrix is %d in mode-1 unfolding.\n",T(2,3,5,7,9),TU(2,3+(5-1)*4+(7-1)*4*6+(9-1)*4*6*8));
+
+
+%example 2
+%test mode_n1n2_unfold(T,n)
+disp('%%%%%%%%%%%%Exp 2%%%%%%%%%%%%%%%%%');
+disp('%%%%%test mode_n1n2_unfold(T,n) with high order matrix input%%%%%');
+T = rand(2,4,6,8,10);
+% disp('T=');
+% disp(T)
+n = [4,2];
+fprintf("mode = %d,%d",n(1),n(2))
+TU = mode_n1n2_unfold(T,n);
+fprintf("T(2,3,5,7,9) is %d, and the corresponding element unfolding matrix is %d in mode_%d_%d_unfolding.\n",T(2,3,5,7,9),TU(7,3,2+(5-1)*2+(9-1)*2*6),n(1),n(2));
+
+disp('%%%%%test mode_n1n2_unfold(T,n) with tensor class input%%%%%');
+T = tensor(rand(2,4,6,8,10));
+% disp('T=');
+% disp(T)
+n = [4,2];
+fprintf("mode = %d,%d",n(1),n(2))
+TU = mode_n1n2_unfold(T,n);
+fprintf("T(2,3,5,7,9) is %d, and the corresponding element unfolding matrix is %d in mode_%d_%d_unfolding.\n",T(2,3,5,7,9),TU(7,3,2+(5-1)*2+(9-1)*2*6),n(1),n(2));
+
+%example 3
+%test mode_n1n2_unfold(T,n1,n2,...,nn)
+disp('%%%%%%%%%%%%Exp 3%%%%%%%%%%%%%%%%%');
+disp('%%%%%test mode_n1n2_unfold(T,n1,n2,...,nn) with high order matrix input%%%%%');
+T = rand(2,4,6,8,10);
+% disp('T=');
+% disp(T)
+n1 = 4;
+n2 = 2;
+TU = mode_n1n2_unfold(T,n1,n2);
+fprintf("T(2,3,5,7,9) is %d, and the corresponding element unfolding matrix is %d in mode_%d_%d_unfolding.\n",T(2,3,5,7,9),TU(7,3,2+(5-1)*2+(9-1)*2*6),n(1),n(2));
+
+disp('%%%%%test mode_n1n2_unfold(T,n1,n2,...,nn) with tensor class input%%%%%');
+T = tensor(rand(2,4,6,8,10));
+% disp('T=');
+% disp(T)
+n1 = 4;
+n2 = 2;
+TU = mode_n1n2_unfold(T,n1,n2);
+fprintf("T(2,3,5,7,9) is %d, and the corresponding element unfolding matrix is %d in mode_%d_%d_unfolding.\n",T(2,3,5,7,9),TU(7,3,2+(5-1)*2+(9-1)*2*6),n(1),n(2));
+
+%% test k_unfold()
+disp('%%%%%%test k_unfold()%%%%%');
+%example 1
+%test mode_n1n2_unfold(T)
+disp('%%%%%%%%%%%%Exp 1%%%%%%%%%%%%%%%%%');
+disp('%%%%%%test k_unfold(T) with high order matrix input%%%%%%');
+T = rand(3,4,6,8,10);
+% disp('T=');
+% disp(T)
+fprintf("default modeK = 1.\n");
+M = k_unfold(T);
+fprintf("T(2,3,5,7,9) is %d, and the corresponding element unfolding matrix is %d in %d_unfolding.\n",T(2,3,5,7,9),M(2,3+(5-1)*4+(7-1)*4*6+(9-1)*4*6*8),1);
+
+disp('%%%%%%test k_unfold(T) with tensor class input%%%%%%');
+T = tensor(rand(3,4,6,8,10));
+% disp('T=');
+% disp(T)
+fprintf("default modeK = 1.\n");
+M = k_unfold(T);
+fprintf("T(2,3,5,7,9) is %d, and the corresponding element unfolding matrix is %d in %d_unfolding.\n",T(2,3,5,7,9),M(2,3+(5-1)*4+(7-1)*4*6+(9-1)*4*6*8),1);
+
+
+%example 2
+%test mode_n1n2_unfold(T,k)
+disp('%%%%%%%%%%%%Exp 2%%%%%%%%%%%%%%%%%');
+disp('%%%%%%test k_unfold(T,k) with high order matrix input%%%%%%');
+T = rand(3,4,6,8,10);
+% disp('T=');
+% disp(T)
+modeK = 2;
+fprintf("modeK = %d.\n",modeK);
+M = k_unfold(T,modeK);
+fprintf("T(2,3,5,7,9) is %d, and the corresponding element unfolding matrix is %d in %d_unfolding.\n",T(2,3,5,7,9),M(2+(3-1)*3,5+(7-1)*6+(9-1)*6*8),modeK);
+
+disp('%%%%%%%%%%%%Exp 2%%%%%%%%%%%%%%%%%');
+disp('%%%%%%test k_unfold(T,k) with tensor class input%%%%%%');
+T = tensor(rand(3,4,6,8,10));
+% disp('T=');
+% disp(T)
+modeK = 2;
+fprintf("modeK = %d.\n",modeK);
+M = k_unfold(T,modeK);
+fprintf("T(2,3,5,7,9) is %d, and the corresponding element unfolding matrix is %d in %d_unfolding.\n",T(2,3,5,7,9),M(2+(3-1)*3,5+(7-1)*6+(9-1)*6*8),modeK);
+

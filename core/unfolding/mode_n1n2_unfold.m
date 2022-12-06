@@ -22,37 +22,48 @@ function TU = mode_n1n2_unfold(varargin)
 %         MT = mode_n1n2_unfold(T,[3,2]);
 %         MT = mode_n1n2_unfold(T,4,3,1,2);
     % Input must be Tensor class
-    if nargin == 0 || ~isa(varargin{1},'tensor')
-        error("Input tensor must be tensor class data")
+    if nargin == 0
+        error("Input tensor must not be empty!")
     end
-    TU = varargin{1};
+    if isa(varargin{1},'tensor')
+        TU = varargin{1}.data;
+    elseif isnumeric(varargin{1})
+        TU = varargin{1};
+    else
+        error("Input tensor must be tensor class data or high dimension matrix!")
+    end
+
+    sz = size(TU);
+    ndim = length(sz);
 
     if nargin == 1
         modeN = 1;
     elseif nargin == 2 
-        if isnumeric(varargin{2}) && varargin{2} == int8(varargin{2}) && min(a)>0 && max(a)<=TU.ndim
+        if all(isnumeric(varargin{2})) && all(varargin{2} == int8(varargin{2})) && all(min(varargin{2})>0) && all(max(varargin{2})<=ndim)
             modeN = int8(varargin{2});
         else
             error("Please input correct mode vector(integer between 1 and ndim)!")
         end
     else
         % nargin >= 3
-        if isnumeric(varargin{2:end}) && varargin{2:end} == int8(varargin{2:end}) && min(varargin{2:end})>0 && max(varargin{2:end})<=TU.ndim
-            modeN = int8(varargin{2:end});
+        if isnumeric([varargin{2:end}]) && all([varargin{2:end}] == int8([varargin{2:end}])) && all(min([varargin{2:end}])>0) && all(max([varargin{2:end}])<=ndim)
+            modeN = int8([varargin{2:end}]);
         else
             error("Please input correct mode vector(integer between 1 and ndim)!")
         end
     end
 
     % Get the last mode IR
-    idx = true(TU.dim,1);
+    idx = true(ndim,1);
     idx(modeN) = false;
-    mode_col = 1:TU.dim;
-    mode_col = mode_col(idx);
+    mode_R = 1:ndim;
+    mode_R = mode_R(idx);
     
     % Litte endian order
-    TU = permute(TU,[modeN,mode_col]);
-    modeList = num2cell([modeN,prod(mode_col)]);
+    TU = permute(TU,[modeN,mode_R]);
+    mode_sz_N = sz(modeN);
+    mode_sz_R = prod(sz(mode_R));
+    modeList = num2cell([mode_sz_N,mode_sz_R]);
     TU = reshape(TU,modeList{:});
    
 end

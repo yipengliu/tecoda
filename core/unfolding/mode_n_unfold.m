@@ -1,38 +1,70 @@
 function M = mode_n_unfold(varargin)
-% mode_n_unfold unfold a tensor into a matrix of size (I1x...xIn)x(In+1x...xIn)
+% mode_n_unfold unfold a tensor into a matrix 
 %     M = mode_n_unfolding(T) unfold tensor T into a matrix by arranging the first 
 %     mode as row and other modes as column in little-endian order.
 %
-%     M = mode_n_unfolding(T,m) unfold tensor T into a matrix by arranging 
-%     the m-th mode as row and other modes as column in little-endian order.Note
+%     M = mode_n_unfolding(T,mode) unfold tensor T into a matrix of size Inx[I1...I(n-1)I(n+1)...IN] by arranging 
+%     the mode-th mode as row and other modes as column in little-endian order and in normal order.Note
 %     that m is integer between 1 and the number of dimension of T.
+%     
+%     M = mode_n_unfolding(T,mode,order) is the same above expect the order
+%     can be assigned by "n" for normal order or "i" for inverse order. If
+%     order = "i", this function return a matrix of size Inx[I(n+1)...INI1...I(n-1)]
 %
 % Examples:
 %      T = tensor(rand(4,5,6))
-%      M = mode_n_unfolding(T) % Unfold T into matrix of size 4x30 in little-endian order.
-%      M = mode_n_unfolding(T,2) % Unfold T into matrix of size 5x24 in little-endian order.
+%      M = mode_n_unfold(T) % Unfold T into matrix of size 4x30 in little-endian order.
+%      M = mode_n_unfold(T,2) % Unfold T into matrix of size 5x24 in little-endian order.
 
     % default mode:arrange first mode as the row and in little-end order
-    if nargin == 0 || ~isa(varargin{1},'tensor')
-        error("Input tensor must be tensor class data")
+    if nargin == 0
+        error("Input tensor must not be empty!")
     end
-    T = varargin{1};
+    if isa(varargin{1},'tensor')
+        T = varargin{1}.data;
+    elseif isnumeric(varargin{1})
+        T = varargin{1};
+    else
+        error("Input tensor must be tensor class data or high dimension matrix!")
+    end
+    sz = size(T);
+    ndim = length(sz);
+
     if nargin == 1
         mode = 1;
+        order = 'f';
     elseif nargin == 2
         % If input contains mode, it must be an integer between 1 and the number of dimension of T
-        if isnumeric(varargin{2}) && varargin{2}>1 && varargin{2} <= T.ndim && varargin{2} == int8(varargin{2})
+        if isnumeric(varargin{2}) && varargin{2}>0 && varargin{2} <= ndim && varargin{2} == int8(varargin{2})
+            mode = int8(varargin{2});
+            order = 'f';
+        else
+            error("Please input correct mode(integer between 1 and ndim)!")
+        end
+    elseif nargin == 3
+        if isnumeric(varargin{2}) && varargin{2}>0 && varargin{2} <= ndim && varargin{2} == int8(varargin{2})
             mode = int8(varargin{2});
         else
             error("Please input correct mode(integer between 1 and ndim)!")
+        end
+        if varargin{3}=='f' || varargin{3}=='i'
+            order = varargin{3};
+        else
+            error("Please input correct order(f or i)!")
         end
     else
         error("Arguments exceed 2!")
     end
 
-    % Litte endian order
-    mode_col = [T.shape(1:mode-1),T.shape(mode-1:end)]';
+    
+    if order == 'f'
+        % formal order
+        mode_col = [1:mode-1,mode+1:ndim];
+    else
+        % inverse order
+        mode_col = [mode+1:ndim,1:mode-1];
+    end
+    mode_sz = sz(mode);
     M = permute(T,[mode,mode_col]);
-    M = reshape(M,mode,[]);
-   
+    M = reshape(M,mode_sz,[]);
 end
