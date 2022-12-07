@@ -42,6 +42,6 @@ function M = k_unfold(varargin)
     mode_row = prod(sz(1:modeK));
     mode_col = prod(sz(modeK+1:ndim));
 
-    M = reshape(T,mode_row,mode_col);
+    M = reshape(T,[mode_row,mode_col]);
    
 end
