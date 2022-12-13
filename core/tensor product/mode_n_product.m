@@ -1,36 +1,57 @@
-function Out = mode_n_product(T1, T2, mode)
+function Out = mode_n_product(T1, T2, varargin)
     % Input:
     %   T1  --  Tensor requiring mode-n product
     %   T2  --  Martix mode-n product
     %   mode
     % Output:
     %   Out = mode_n_product(T1, T2, mode)
-
-
-    %  error
-    if mode < 0 || mode > T1.ndims
-        error('Wrong mode')
+    
+    if ~iscell(T2)
+       T2 = {T2}; 
     end
-
-    if T1.size(mode) ~= size(T2, 2)
-        if T1.size(mode) == size(T2, 1)
-           T2 = T2';
-           warning('Matrix needs to be transposed.')
+    if isa(T1,'tensor')
+        Out = T1.data;
+    else
+        Out = T1;
+    end
+    if nargin == 3
+        mode = varargin{:};
+        if ndims(mode) == 1
+            idx = mode;
+            if mode < 0
+                idx = 1 : numel(T2);
+                idx(abs(mode)) = [];
+            end
         else
-           error('Wrong data')
+            if sum(sum(mode < 0)) == numel(mode)
+                idx = 1 : numel(T2);
+                idx(abs(mode)) = [];
+            elseif sum(sum(mode > 0)) == numel(mode)
+                idx = mode;
+            else
+                error('Wrong mode input')
+            end
         end
+    else
+        idx = 1 : numel(T2);
     end
+    
+    Out = mode_product(Out, T2, idx);
+    if isa(T1,'tensor') && ~ismatrix(Out)
+        Out = tensor(Out);
+    end
+end
 
-    L1 = T1.size;
-    L2 = size(T2);
-    N = T1.ndims;
-    index1 = 1:N;
-    index1(mode) = [];
-    perm = [index1,mode];
-    tempXX = T1.permute(perm).reshape([prod(L1(index1)),prod(L1(mode))]);
-    temp = tempXX *T2';
-    Out = temp.reshape([L1(index1),L2(1)]).ipermute(perm);
-    % iperm(perm) = 1:N;
-    % X = temp.reshape([L1(index1),L2(1)]).permute(iperm);
+function Out = mode_product(Out, T2, idx)
+    for i = idx
+        L1 = size(Out);
+        L2 = size(T2{i});
+        index1 = 1:ndims(Out);
+        index1(i) = [];
+        perm = [index1,i];
+        tempXX = reshape(permute(Out, perm), ([prod(L1(index1)),prod(L1(i))]));
+        temp = tempXX *T2{i};
+        Out = ipermute(reshape(temp,([L1(index1),L2(2)])), perm);
+    end
 end
 

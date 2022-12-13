@@ -7,16 +7,20 @@ function Out = tensor_contraction(T1, T2, m, n)
     % Output:
     %   X - the contraction result
 
-    L1 = T1.size;
-    L2 = T2.size;
-    index1 = 1:T1.ndims;
-    index2 = 1:T2.ndims;
+    L1 = size(T1);
+    L2 = size(T2);
+    index1 = 1:length(size(T1));
+    index2 = 1:length(size(T2));
     index1(m) = [];
     index2(n) = [];
-    tempXX = T1.permute([index1,m]).reshape([prod(L1(index1)),prod(L1(m))]);
-    tempYY = T2.permute([n,index2]).reshape([prod(L2(n)),prod(L2(index2))]);
-    temp = tempXX * tempYY;
+    tempXX = reshape(permute(T1, [index1,m]), [prod(L1(index1)),prod(L1(m))]);
+    tempYY = reshape(permute(T2, [n,index2]), [prod(L2(n)),prod(L2(index2))]);
+    temp = tempXX.data * tempYY.data;
 
-    Out = temp.reshape([L1(index1),L2(index2)]);
+    Out = reshape(temp, [L1(index1),L2(index2)]);
+    
+    if isa(T1,'tensor') && ~ismatrix(Out)
+        Out = tensor(Out);
+    end
 end
 
