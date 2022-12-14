@@ -12,8 +12,8 @@ function Out = inner_product(varargin)
 
     T = {};
     for i = 1 : nargin
-        T = [T varargin{i}];
-    %   T = [T varargin{i}.data];
+    %    T = [T varargin{i}];
+       T = [T varargin{i}.data];
     end
 
     if numel(T) == 2

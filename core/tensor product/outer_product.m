@@ -4,21 +4,13 @@ function Out = outer_product(varargin)
     % Output:
     %   Out = outer_product(T1, T2, ...)
 
-    % % test
-    % % data = {};
-    % % for i = 1 : numel(varargin)
-    % %     data = [data varargin{i}];
-    % % end
-
-    % error judgement
-    % -------------------------------------------
-    if nargin == 0 || ~isa(varargin{1},'tensor')
-        error('Input tensor must be tensor class data')
+    if nargin == 0
+        error('error data input')
     end
+    
     T = {};
     for i = 1 : nargin
         T = [T varargin{i}];
-    %   T = [T varargin{i}.data];
     end
     Out = T{1};
     if numel(T) ~= 1
@@ -26,7 +18,18 @@ function Out = outer_product(varargin)
            Out = bsxfun(@times, Out(:), T{i}(:).'); 
         end
     %   Reshape
-        Out = Out.reshape(cell2mat(cellfun(@(x) size(x), T, 'UniformOutput', false)));
-    %     X = reshape(X, cell2mat(cellfun(@(x) size(x), T, 'UniformOutput', false)));
+    	Outsize = cell2mat(cellfun(@(x) tensorsize(x), T, 'UniformOutput', false));
+        Out = reshape(Out, Outsize(:)');
+    end
+    if ~ismatrix(Out)
+        Out = tensor(Out);
+    end
+end
+
+function Size = tensorsize(T)
+    if isvector(T)
+       Size = numel(T);
+    else
+        Size = size(T);
     end
 end

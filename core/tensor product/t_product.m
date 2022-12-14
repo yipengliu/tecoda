@@ -11,7 +11,7 @@ function Out=t_product(varargin)
     end
     T = {};
     for i = 1 : nargin
-        T = [T varargin{i}];
+        T = [T varargin{i}.data];
     end
     if numel(T) ~= 2
         if numel(T) == 1
@@ -22,16 +22,16 @@ function Out=t_product(varargin)
     else
         T1 = T{1};
         T2 = T{2};
-        if T1.size(2) ~= T2.size(1) || T1.size(3) ~= T2.size(3)
+        if size(T1, 2) ~= size(T2, 1) || size(T1, 3) ~= size(T2, 3)
            error('Wrond data size') 
         end
 
-        [l, ~, ~] = T1.size;
-        [p, m, n] = T2.size;
+        [l, ~, ~] = size(T1);
+        [p, m, n] = size(T2);
         Outdim = [l, m, n];
 
-        T1_Unfold = T1.permute([2,1,3]).reshape(p, [])';
-        T2_Unfold = T2.permute([2,1,3]).reshape(m, [])';
+        T1_Unfold = reshape(permute(T1, [2,1,3]), p, [])';
+        T2_Unfold = reshape(permute(T2, [2,1,3]), m, [])';
 
         T1_bcirc = zeros([l*n, p*n]);
         for i=1:n
@@ -39,6 +39,9 @@ function Out=t_product(varargin)
         end
 
         temp = (T1_bcirc * T2_Unfold)';
-        Out = temp.reshape(Outdim([2,1,3])).ipermute([2,1,3]);
+        Out = ipermute(reshape(temp, Outdim([2,1,3])), [2,1,3]);
+    end
+    if ~ismatrix(Out)
+        Out = tensor(Out);
     end
 end
