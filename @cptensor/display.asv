@@ -1,0 +1,11 @@
+function message = display(T,name)
+%report the meassage of CP format tensor
+
+
+if ~exist('name','var')
+    name = 'ans';
+end
+
+fprintf(['%s is a rank-%d CPtensor of shape'repmat() 'as\n'], name,T.rank,T.sz(1,:));
+
+end 

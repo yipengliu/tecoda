@@ -82,7 +82,7 @@ for n=1:length(d)
     F{n}=rand(d(n),r);
 end
 
-T=cptensor(W,F{1},F{2},F{3});
+T=cptensor(W,F);
 display(T)
 X=cp2tensor(T);
 

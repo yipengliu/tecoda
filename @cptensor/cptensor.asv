@@ -58,7 +58,7 @@ classdef cptensor
                 CP.factors = varargin{1};    
                 CP.ndims = numel(CP.factors);
                 CP.rank = size(CP.factors{1},2);
-                CP.weights = ones(CP.rank,1);
+                CP.weights = ones(CP.ndims,1);
                 CP.sz = [size(CP.factors{1},1),zeros(1,CP.ndims-1)];
                 for i = 2 : CP.ndims
                     sz = size(CP.factors{i});
