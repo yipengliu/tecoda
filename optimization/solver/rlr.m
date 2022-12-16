@@ -66,7 +66,7 @@ switch para.pentype
         g=@(X) norm(X,1);
         prox=@(X) prox_l1 (X,lambda);        
     case 'ell_21'        
-          g=@(X) norm_21(X);
+          g=@(X) norm_l21(X);
           prox=@(X) prox_l21 (X,lambda);
     case 'ell_tv'
           g=@(X) tv(X);
