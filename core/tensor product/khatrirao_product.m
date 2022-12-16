@@ -22,10 +22,10 @@ function Out = khatrirao_product(varargin)
         error('All data must have the same column dimension.');
     end
     
-    Out = T{1};
+    Out = T{end};
     N = N(1);
     if numel(T) ~= 1
-        for i = 2 : numel(T)
+        for i = numel(T)-1 : -1 : 1
            Out = bsxfun(@times, reshape(T{i}, [], 1, N), reshape(Out, 1, [], N)); 
         end
     end
