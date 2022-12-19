@@ -20,7 +20,8 @@ function TU = mode_n1n2_unfold(varargin)
 %         MT = mode_n1n2_unfold(T);
 %         MT = mode_n1n2_unfold(T,2);
 %         MT = mode_n1n2_unfold(T,[3,2]);
-%         MT = mode_n1n2_unfold(T,4,3,1,2);
+%         MT = mode_n1n2_unfold(T,3,2);
+
     % Input must be Tensor class
     if nargin == 0
         error("Input tensor must not be empty!")
@@ -63,7 +64,7 @@ function TU = mode_n1n2_unfold(varargin)
     TU = permute(TU,[modeN,mode_R]);
     mode_sz_N = sz(modeN);
     mode_sz_R = prod(sz(mode_R));
-    modeList = num2cell([mode_sz_N,mode_sz_R]);
-    TU = reshape(TU,modeList{:});
+    modeList = [mode_sz_N,mode_sz_R];
+    TU = reshape(TU,modeList);
    
 end
