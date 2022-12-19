@@ -12,10 +12,10 @@ function M = mode_n_unfold(varargin)
 %     order = "i", this function return a matrix of size Inx[I(n+1)...INI1...I(n-1)]
 %
 % Examples:
-%      T = tensor(rand(4,5,6));
-%      M = mode_n_unfold(T); % Unfold T into matrix of size 4x30 in little-endian order.
-%      M = mode_n_unfold(T,2); % Unfold T into matrix of size 5x24 in little-endian order.
-%      M = mode_n_unfold(T,2,'i'); % Unfold T into matrix of size 5x24 in little-endian order in inverse order.
+%      T = tensor(rand(4,5,6))
+%      M = mode_n_unfold(T) % Unfold T into matrix of size 4x30 in little-endian order.
+%      M = mode_n_unfold(T,2) % Unfold T into matrix of size 5x24 in little-endian order.
+%      M = mode_n_unfold(T,2,'i') % Unfold T into matrix of size 5x24 in little-endian order in inverse order.
 
     % default mode:arrange first mode as the row and in little-end order
     if nargin == 0
@@ -58,7 +58,7 @@ function M = mode_n_unfold(varargin)
     end
 
     
-    if order == 'n'
+    if order == 'f'
         % formal order
         mode_col = [1:mode-1,mode+1:ndim];
     else

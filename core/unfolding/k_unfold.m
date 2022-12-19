@@ -1,16 +1,19 @@
 function M = k_unfold(varargin)
-% mode_k_unfold() unfold a tensor into a tensor of size IkxIR.
+% k_unfold() unfold a tensor into a tensor of size IkxIR.
 %     Note that Ik = I1x..xIk,IR=I(k+1)x...xIN
 %
-%     TU = k_unfold(T) unfold tensor T into a matrix by arranging the first 
+%     M = k_unfold(T) unfold tensor T into a matrix by arranging the first 
 %     mode as row and other modes as column in little-endian order, just
 %     like mode_n_unfolding().
 %
-%     TU = k_unfold(T,k) unfold a tensor into a tensor of size IkxIR.
+%     M = k_unfold(T,k) unfold a tensor into a tensor of size IkxIR.
 %     Note that Ik = I1x..xIk,IR=I(k+1)x...xIN
 %
 % Examples
-%   
+%     T = tensor(rand(2,4,6,8));
+%     M = k_unfold(T);
+%     M = k_unfold(T,2);
+
     % Input must be Tensor class
     if nargin == 0
         error("Input tensor must not be empty!")
@@ -22,7 +25,7 @@ function M = k_unfold(varargin)
     else
         error("Input tensor must be tensor class data or high dimension matrix!")
     end
-    T = varargin{1};
+
     sz = size(T);
     ndim = length(sz);
 

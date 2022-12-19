@@ -14,7 +14,7 @@ classdef cptensor
         factors
         rank
         ndims
-        sz
+        size
     end
     methods
         function CP = cptensor(varargin)
@@ -43,7 +43,7 @@ classdef cptensor
                 CP.factors = {};
                 CP.rank = 0;
                 CP.ndims = 0;
-                CP.sz = [];
+                CP.size = [];
                 return;
             end
 
@@ -59,13 +59,13 @@ classdef cptensor
                 CP.ndims = numel(CP.factors);
                 CP.rank = size(CP.factors{1},2);
                 CP.weights = ones(CP.rank,1);
-                CP.sz = [size(CP.factors{1},1),zeros(1,CP.ndims-1)];
+                CP.size = [size(CP.factors{1},1),zeros(1,CP.ndims-1)];
                 for i = 2 : CP.ndims
                     sz = size(CP.factors{i});
                     if sz(2) ~= CP.rank
                         error('Second dimension of factor matrix %d must be equal to the first matrix!',i)
                     else
-                        CP.sz(i) = sz(1);
+                        CP.size(i) = sz(1);
                     end
                 end
                 return;
@@ -77,13 +77,13 @@ classdef cptensor
                 CP.factors = varargin{2};    
                 CP.ndims = numel(CP.factors);
                 CP.rank = size(CP.factors{1},2);
-                CP.sz = [size(CP.factors{1},1),zeros(1,CP.ndims-1)];
+                CP.size = [size(CP.factors{1},1),zeros(1,CP.ndims-1)];
                 for i = 2 : CP.ndims
                     sz = size(CP.factors{i});
                     if sz(2) ~= CP.rank
                         error('Second dimension of factor matrix %d must be equal to the first matrix!',i)
                     else
-                        CP.sz(i) = sz(1);
+                        CP.size(i) = sz(1);
                     end
                 end
                 return;
@@ -95,13 +95,13 @@ classdef cptensor
                 CP.factors = varargin(2:end);
                 CP.ndims = numel(CP.factors);
                 CP.rank = size(CP.factors{1},2);
-                CP.sz = [size(CP.factors{1},1),zeros(1,CP.ndims-1)];
+                CP.size = [size(CP.factors{1},1),zeros(1,CP.ndims-1)];
                 for i = 2 : CP.ndims
                     sz = size(CP.factors{i});
                     if sz(2) ~= CP.rank
                         error('Second dimension of factor matrix %d must be equal to the first matrix!',i)
                     else
-                        CP.sz(i) = sz(1);
+                        CP.size(i) = sz(1);
                     end
                 end
                 return;
