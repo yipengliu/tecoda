@@ -1,7 +1,7 @@
 function T = k_fold(varargin)
-% k_fold() fold a k_fold matrix into its original tensor.
+% k_fold() fold a k_unfold matrix into its original tensor.
 %
-%     T = k_fold(M,size)  is the inverse operation of M = k_unfold(T,k)
+%     T = k_fold(M,size) is the inverse operation of M = k_unfold(T,k)
 %
 % Examples
 %     T = tensor(rand(2,4,6,8));

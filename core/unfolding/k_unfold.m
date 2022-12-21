@@ -20,14 +20,17 @@ function M = k_unfold(varargin)
     end
     if isa(varargin{1},'tensor')
         T = varargin{1}.data;
+        sz = varargin{1}.size;
+        ndim = length(sz);
     elseif isnumeric(varargin{1})
         T = varargin{1};
+        sz = size(T);
+        ndim = length(sz);
     else
         error("Input tensor must be tensor class data or high dimension matrix!")
     end
 
-    sz = size(T);
-    ndim = length(sz);
+
 
     if nargin == 1
         modeK = 1;

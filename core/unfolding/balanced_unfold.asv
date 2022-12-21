@@ -1,0 +1,34 @@
+function [M,lbest,nbest] = balanced_unfold(varargin)
+% balanced_unfold Lshift_n_unfold a tensor into a square matrix as
+% approximatively as possible by choosing the suitable shift l and mode n.
+%
+%     [M,l,n] = Lshift_n_unfold(T) does the function above.
+%
+% Example
+%    T = tensor(rand(2,4,6,8));
+%    M = balanced_unfold(T);
+%    M,l,n = balanced_unfold(T);
+    if nargin ~= 1
+        error("Incorrect arguments number!")
+    end
+    if isa(varargin{1},'tensor')
+        T = varargin{1}.data;
+        sz = T.size;
+        ndim = T.ndims;
+    elseif isnumeric(varargin{1})
+        T = varargin{1};
+        sz = size(T);
+        ndim = length(sz);
+    else
+        error("Input tensor must be tensor class data or high dimension matrix!")
+    end
+    
+    best = sqrt(prod(sz));
+    for l = 1:ndim-1
+        left = 1;
+        for n = 0:ndim-2
+            left = left*sz(l+n);
+            
+    
+end
+

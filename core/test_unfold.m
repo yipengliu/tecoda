@@ -162,7 +162,7 @@ end
 %% test k_unfold()
 disp('%%%%%%test k_unfold()%%%%%');
 %example 1
-%test mode_n1n2_unfold(T)
+%test k_unfold(T)
 disp('Exp 1 test k_unfold(T)');
 disp('high order matrix input');
 T = rand(3,4,6,8,10);
@@ -182,7 +182,7 @@ fprintf("T(2,3,5,7,9) is %d, and the corresponding element unfolding matrix is %
 disp("----------------------------------------------------------------------------------------------");
 
 %example 2
-%test mode_n1n2_unfold(T,k)
+%test k_unfold(T,k)
 disp('Exp 2 test k_unfold(T,k)');
 disp('high order matrix input');
 T = rand(3,4,6,8,10);
@@ -205,6 +205,68 @@ M = k_unfold(T,modeK);
 fprintf("T(2,3,5,7,9) is %d, and the corresponding element unfolding matrix is %d in %d_unfolding.\n",T(2,3,5,7,9),M(2+(3-1)*3,5+(7-1)*6+(9-1)*6*8),modeK);
 T1 = k_fold(M,T.size);
 fprintf("T(2,3,5,7,9) is %d, and T1(2,3,5,7,9) is %d\n",T(2,3,5,7,9),T1(2,3,5,7,9));
+disp("----------------------------------------------------------------------------------------------");
+
+if Qpause
+    fprintf("Enter any key to continue,press ctrl+c to exit\n")
+    pause
+end
+%% test Lshift_n_unfold()
+disp('%%%%%%test Lshift_n_unfold()%%%%%');
+%example
+%test M = Lshift_n_unfold(T,l,n) 
+disp('Exp test Lshift_n_unfold(T)');
+disp('high order matrix input');
+T = rand(3,4,6,8,10);
+% disp('T=');
+% disp(T)
+l = 3;
+n = 2;
+fprintf("l = %d, n = %d.\n",l,n);
+M = Lshift_n_unfold(T,l,n);
+fprintf("T(2,3,5,7,9) is %d, and the corresponding element unfolding matrix is %d in %dshift_%d_unfolding.\n",T(2,3,5,7,9),M(5+(7-1)*6,9+(2-1)*10+(3-1)*10*3),l,n);
+T1 = Lshift_n_fold(M,l,size(T));
+fprintf("T(2,3,5,7,9) is %d, and T1(2,3,5,7,9) is %d\n",T(2,3,5,7,9),T1(2,3,5,7,9));
+
+disp('Tensor class input');
+T = tensor(rand(3,4,6,8,10));
+% disp('T=');
+% disp(T)
+l = 3;
+n = 2;
+fprintf("l = %d, n = %d.\n",l,n);
+M = Lshift_n_unfold(T,l,n);
+fprintf("T(2,3,5,7,9) is %d, and the corresponding element unfolding matrix is %d in %dshift_%d_unfolding.\n",T(2,3,5,7,9),M(5+(7-1)*6,9+(2-1)*10+(3-1)*10*3),l,n);
+T1 = Lshift_n_fold(M,l,T.size);
+fprintf("T(2,3,5,7,9) is %d, and T1(2,3,5,7,9) is %d\n",T(2,3,5,7,9),T1(2,3,5,7,9));
+disp("----------------------------------------------------------------------------------------------");
+
+if Qpause
+    fprintf("Enter any key to continue,press ctrl+c to exit\n")
+    pause
+end
+%% test balanced_unfold()
+disp('%%%%%%test balanced_unfold()%%%%%');
+%example
+%test M = balanced_unfold(T) 
+disp('Exp test Lshift_n_unfold(T)');
+disp('high order matrix input');
+T = rand(80,8,6,10,6);
+% disp('T=');
+% disp(T)
+[M,l,n] = balanced_unfold(T);
+fprintf("lbest = %d, nbest = %d.\n",l,n);
+T1 = balanced_fold(M,l,size(T));
+fprintf("T(2,3,5,7,6) is %d, and T1(2,3,5,7,6) is %d\n",T(2,3,5,7,6),T1(2,3,5,7,6));
+
+disp('Tensor class input');
+T = tensor(rand(80,8,6,10,6));
+% disp('T=');
+% disp(T)
+[M,l,n] = balanced_unfold(T);
+fprintf("lbest = %d, nbest = %d.\n",l,n);
+T1 = balanced_fold(M,l,T.size);
+fprintf("T(2,3,5,7,6) is %d, and T1(2,3,5,7,6) is %d\n",T(2,3,5,7,6),T1(2,3,5,7,6));
 disp("----------------------------------------------------------------------------------------------");
 
 if Qpause
