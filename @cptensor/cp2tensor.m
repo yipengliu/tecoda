@@ -9,7 +9,7 @@ function T = cp2tensor(CP)
         % of the column-major matrix data which is then converted into a
         % tensor without permutation.
         %data = khatrirao(CP.factors(1:minS),'r') * diag(CP.weights) * khatrirao(CP.factors(minS+1:end),'r').';
-        data = khatrirao_product(CP.factors(1:minS)) * diag(CP.weights) * khatrirao_product(CP.factors(minS+1:end)).';
+        data = khatrirao_product(CP.factors(1:minS),'r') * diag(CP.weights) * khatrirao_product(CP.factors(minS+1:end),'r').';
     end
     T = tensor(data,CP.size);
 end

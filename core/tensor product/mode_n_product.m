@@ -2,6 +2,7 @@ function Out = mode_n_product(T1, T2, varargin)
     % Input:
     %   T1  --  Tensor requiring mode-n product
     %   T2  --  Martix mode-n product
+    %   if ischar(varargin{end}) && varargin{end} == 'T' -- transpose product
     %   mode
     % Output:
     %   Out = mode_n_product(T1, T2, mode)
@@ -9,13 +10,21 @@ function Out = mode_n_product(T1, T2, varargin)
     if ~iscell(T2)
        T2 = {T2}; 
     end
+        
     if isa(T1,'tensor')
         Out = T1.data;
     else
         Out = T1;
     end
-    if nargin == 3
-        mode = varargin{:};
+    if nargin > 2
+        if ischar(varargin{end}) && varargin{end} == 'T'
+           for i = 1 : length(T2)
+              T2{i} = T2{i}';
+           end
+            mode = varargin{1:end-1};
+        else
+            mode = varargin{:};
+        end
         if ndims(mode) == 1
             idx = mode;
             if mode < 0
