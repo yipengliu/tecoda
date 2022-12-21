@@ -1,32 +1,32 @@
-function M = Lshift_n_unfold(varargin)
-% Lshift_n_unfold unfold a tensor into a matrix of size
-% Il...Imod(l+n,N)xImod(l+n+1,N)...I(l-1)
+function T = Lshift_n_fold(varargin)
+% Lshift_n_fold fold a Lshift_n_unfold matrix into its original tensor.
 %
-%     M = Lshift_n_unfold(T,l,n) first shifts the original tensor T by l
-%     and unfolds the tensor along the n-th mode.
+%     T = Lshift_n_fold(M,l,size) is the inverse operation of M = Lshift_n_fold(T,l,n)
 %
 % Example
 %    T = tensor(rand(2,4,6,8));
 %    M = Lshift_n_unfold(T,2,4);
+%    T1 = Lshift_n_fold(T,2,T.size);
     if nargin ~= 3
         error("Incorrect arguments number!")
     end
     if isa(varargin{1},'tensor')
-        M = varargin{1}.data;
+        T = varargin{1}.data;
     elseif isnumeric(varargin{1})
-        M = varargin{1};
+        T = varargin{1};
     else
         error("Input tensor must be tensor class data or high dimension matrix!")
     end
     if isnumeric(varargin{2}) && isnumeric(varargin{3})
         l = varargin{2};
-        n = varargin{3};
+        sz = varargin{3};
     else
         error("Please input correct mode vector and original tensor size!")
     end
-    sz = size(M);
     ndim = length(sz);
+    sz = [sz(l:ndim),sz(1:l-1)];
+    T = k_fold(T,sz);
+    
     shift_list = [l:ndim,1:l-1];
-    M = permute(M,shift_list);
-    M = k_unfold(M,n);
+    T = ipermute(T,shift_list);
 end
