@@ -96,3 +96,20 @@ if Qpause
     fprintf("Enter any key to continue,press ctrl+c to exit\n")
     pause
 end
+
+%% test cp_als
+disp('%%%%%%%%test cp-als%%%%%%%%');
+
+X=tensor(rand([3,4,5]));
+R=10;
+T=cp_als(X,R);
+X_hat=cp2tensor(T);
+Err=norm(reshape(double(X)-double(cp2tensor(T)),1,[]))/norm(reshape(double(X),1,[]));%% needs further define
+
+fprintf("CP approxiamtion with rank %d achieve approxiamtion erro %d.\n",R,Err)
+
+
+if Qpause
+    fprintf("Enter any key to continue,press ctrl+c to exit\n")
+    pause
+end
