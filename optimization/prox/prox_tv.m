@@ -1,10 +1,11 @@
 function [sol,normTv] = prox_tv(b, gamma, varargin)
 %PROX_TV Total variation proximal operator
-%   Usage:  sol=prox_tv(x, gamma)
+%   Usage:  sol=prox_tv(b, gamma)
 %
 %   Input parameters:
-%         x     : Input signal.
+%         b     : Input signal.
 %         gamma : Regularization parameter.
+%         varargin: include a flag to choose the type of tv
 %   Output parameters
 %         sol   : Solution.
 %
@@ -12,6 +13,17 @@ function [sol,normTv] = prox_tv(b, gamma, varargin)
 %
 
 % Initializations
+flag = 0;
+if nargin > 3
+    tmp = varargin{1};
+    if tmp == 0
+        flag = 0;
+    elseif tmp == 1
+        flag = 1;
+    else
+        error('wrong tv type specified');
+    end
+end
 [r, s] = gradient_op(b*0);
 pold = r; qold = s;
 told = 1; prev_obj = 0;
@@ -20,25 +32,18 @@ normTv=0;
 mt = 1;
 
 % Main iterations
-fprintf('  Proximal TV operator:\n');
-    
+
 for iter = 1:200
 
     % Current solution
     sol = b - gamma*div_op(r, s);
 
     % Objective function value
-    tmp = gamma * sum(norm_tv(sol));
+    tmp = gamma * sum(norm_tv(sol,flag));
     obj = .5*norm(b(:)-sol(:), 2)^2 + tmp;
     rel_obj = abs(obj-prev_obj)/obj;
     prev_obj = obj;
 
-    % Stopping criterion
-    fprintf('   Iter %i, obj = %e, rel_obj = %e\n', ...
-        iter, obj, rel_obj);
-    if rel_obj < tol
-        crit = 'TOL_EPS'; break;
-    end
 
     % Udpate divergence vectors and project
     [dx, dy] = gradient_op(sol);
@@ -57,10 +62,6 @@ for iter = 1:200
     s = q + (told-1)/t * (q - qold); qold = q;
     told = t;
 
-end
-if(varargin{1} == 1)
-    fprintf(['  Prox_TV: obj = %e, rel_obj = %e,' ...
-        ' %s, iter = %i\n'], obj, rel_obj, crit, iter);
 end
 end
 
