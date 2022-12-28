@@ -13,6 +13,7 @@ a=rand(3,1);
 b=rand(4,1);
 c=outer_product(a,b);
 
+
 M=3;
 a=cell(M,1);
 for m=1:M
@@ -52,6 +53,7 @@ A=rand(3,4);
 B=rand(2,2);
 C=kron(A,B);
 C1=Kronecker_product(A,B);
+C2=Kronecker_product(A,B,'r');
 
 %% khatirao
 
@@ -59,4 +61,4 @@ A=rand(3,4);
 B=rand(2,4);
 C=khatrirao_product(A,B);
 D=khatrirao_product(A,B,C);
-
+E=khatrirao_product(A,B,C,'r');
