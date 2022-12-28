@@ -6,16 +6,31 @@ function Out = Kronecker_product(varargin)
 
     T = {};
     
-    for i = 1 : nargin
-        if ~isa(varargin{i},'tensor')
-            T = [T varargin{i}];
-        else
-            T = [T varargin{i}.data];
+    if ischar(varargin{end}) && varargin{end} == 'r'
+        for i = 1 : nargin - 1
+            if ~isa(varargin{i},'tensor')
+                T = [T varargin{i}];
+            else
+                T = [T varargin{i}.data];
+            end
         end
+        idx = numel(T)-1 : -1 : 1;
+        Out = T{end};
+    else
+        for i = 1 : nargin
+            if ~isa(varargin{i},'tensor')
+                T = [T varargin{i}];
+            else
+                T = [T varargin{i}.data];
+            end
+        end
+        idx = 2 : 1 : numel(T);
+        Out = T{1};
     end
-    Out = T{1};
+    
+
     if numel(T) ~= 1
-        for i = 2 : numel(T)
+        for i = idx
             if ndims(Out) ~= ndims(T{i})
                 error('error data size')
             end
