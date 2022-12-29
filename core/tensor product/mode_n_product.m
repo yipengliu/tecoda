@@ -16,33 +16,33 @@ function Out = mode_n_product(T1, T2, varargin)
     else
         Out = T1;
     end
-    if nargin > 2
-        if ischar(varargin{end}) && varargin{end} == 'T'
-           for i = 1 : length(T2)
-              T2{i} = T2{i}';
-           end
-            mode = varargin{1:end-1};
-        else
-            mode = varargin{:};
+    
+    if nargin >= 3 && ischar(varargin{end}) && varargin{end} == 'T'
+        for i = 1 : length(T2)
+        	T2{i} = T2{i}';
         end
-        if ndims(mode) == 1
-            idx = mode;
-            if mode < 0
-                idx = 1 : numel(T2);
-                idx(abs(mode)) = [];
-            end
-        else
-            if sum(sum(mode < 0)) == numel(mode)
-                idx = 1 : numel(T2);
-                idx(abs(mode)) = [];
-            elseif sum(sum(mode > 0)) == numel(mode)
-                idx = mode;
-            else
-                error('Wrong mode input')
-            end
+        if nargin > 3
+            mode = varargin{1:end-1};
+        elseif nargin == 3
+            mode = inf;
         end
     else
+        if nargin >= 3
+            mode = varargin{:};
+        end
+    end
+    
+    if (nargin == 2) | (exist('mode','var') & mode == inf)
         idx = 1 : numel(T2);
+    else
+        if sum(mode > 0) == 0
+            idx = 1 : numel(T2);
+            idx(abs(mode)) = [];
+        elseif sum(mode < 0) == 0
+            idx = mode;
+        else
+            error('Wrong mode input')
+        end
     end
     
     Out = mode_product(Out, T2, idx);
