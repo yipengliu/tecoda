@@ -2,8 +2,8 @@ classdef TKtensor
     properties
         core
         factors
-        ndims
-        shape
+        size
+        rank
     end
     methods
         function TK = TKtensor(varargin)
@@ -17,8 +17,8 @@ classdef TKtensor
             if (nargin==0)
                 TK.core=tensor();
                 TK.factors = {};
-                TK.ndims = 0;
-                TK.shape = [];
+                TK.size = 0;
+                TK.rank = 0;
                 return;
             end
             if(nargin==1&&isa(varargin{1},'TKtensor'))
@@ -57,12 +57,12 @@ classdef TKtensor
                 end
             end
             
-            TK.ndims = ndims(TK.core);
-            shape{1} = s_core;
+            siz = zeros(1,length(TK.factors));
             for i=1:length(TK.factors)
-                shape{i+1}=size(TK.factors{i});
+                siz(i)= size(TK.factors{i},1);
             end
-            TK.shape = shape;
+            TK.size = siz;
+            TK.rank = size(TK.core);
             return;
         end
     end
