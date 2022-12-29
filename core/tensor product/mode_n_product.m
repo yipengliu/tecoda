@@ -52,14 +52,19 @@ function Out = mode_n_product(T1, T2, varargin)
 end
 
 function Out = mode_product(Out, T2, idx)
-    for i = idx
+    for i = 1 : length(idx)
+        if length(T2) == length(idx)
+            Idx = i;
+        elseif length(T2) > length(idx)
+            Idx = idx(i);
+        end
         L1 = size(Out);
-        L2 = size(T2{i});
+        L2 = size(T2{Idx});
         index1 = 1:ndims(Out);
-        index1(i) = [];
-        perm = [index1,i];
-        tempXX = reshape(permute(Out, perm), ([prod(L1(index1)),prod(L1(i))]));
-        temp = tempXX *T2{i};
+        index1(idx(i)) = [];
+        perm = [index1,idx(i)];
+        tempXX = reshape(permute(Out, perm), ([prod(L1(index1)),prod(L1(idx(i)))]));
+        temp = tempXX *T2{Idx};
         Out = ipermute(reshape(temp,([L1(index1),L2(2)])), perm);
     end
 end
