@@ -1,4 +1,4 @@
-function TK = hosvd(X,ranks,varargin)
+function TK = HOSVD(X,ranks,varargin)
 %HOSVD Compute sequentially-truncated higher-order SVD (Tucker).
 %   Input:  X:      Tensor in Size(I1, I2, ..., IN)
 %           rank:   Multilinear rank(R1, R2, ..., RN)
