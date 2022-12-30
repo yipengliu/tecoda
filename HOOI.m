@@ -1,4 +1,4 @@
-function TK = HOOI(X, rank, options)
+function TK = hooi(X, rank, options)
 %   Input:  X:      Tensor in Size(I1, I2, ..., IN)
 %           rank:   Multilinear rank(R1, R2, ..., RN)
 %   Output: TK:     Tucker class 
@@ -16,8 +16,8 @@ function TK = HOOI(X, rank, options)
             [u,~,~] = svd(mode_n_unfold(y, j),'econ');
             TK.factors{j} = u(:, 1:rank(j));
         end
-        TK.core = mode_n_product(X, TK.factors);
-        error = norm(TK.core-lostcore);
+        TK.core = tensor(mode_n_product(X, TK.factors));
+        error = norm(calculate("minus", TK.core, lostcore));
         if error < options.Err, break; end
     end
     TK.core = mode_n_product(X, TK.factors);
