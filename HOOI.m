@@ -1,4 +1,4 @@
-function TK = hooi(X, rank, options)
+function TK = HOOI(X, rank, options)
 %   Input:  X:      Tensor in Size(I1, I2, ..., IN)
 %           rank:   Multilinear rank(R1, R2, ..., RN)
 %   Output: TK:     Tucker class 
@@ -7,7 +7,7 @@ function TK = hooi(X, rank, options)
     if ~isfield(options, 'MaxIter'), options.MaxIter = 1e3; end
     if ~isfield(options, 'Err'), options.Err = 1e-5; end
     
-    TK = hosvd(X, rank);
+    TK = HOSVD(X, rank);
     
     for i = 1 : options.MaxIter
         lostcore = TK.core;
