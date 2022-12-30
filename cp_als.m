@@ -66,12 +66,12 @@ T.rank=R;
     Xd=cell(D,1);
     for d = 1:D
         if d==1
-            Xd{1}=reshape(double(X),dim(1),[]);
+            Xd{1}=reshape(X,[dim(1),prod(dim(2:D))]);
         elseif d==D
-            Xd{D}=reshape(double(X),[],dim(D))';
+            Xd{D}=reshape(X,[prod(dim(1:D-1)),dim(D)])';
         else         
         temp=permute(X,[d 1:d-1,d+1:D]);
-        Xd{d}=reshape(double(temp),dim(d),[]);
+        Xd{d}=reshape(double(temp),[dim(d),prod(dim)/dim(d)]);
         end
         if ~isempty(U{d})
             UtU(:,:,d) = U{d}'*U{d};
@@ -110,7 +110,7 @@ T.rank=R;
         T.factors=U;
         
         
-        Err=norm(reshape(double(X)-double(cp2tensor(T)),1,[]));%% needs further define
+        Err=norm(calculate("minus",X,cp2tensor(T)));%% calculate the approximation error
       
         
         % Check for convergence
@@ -123,8 +123,6 @@ T.rank=R;
         end
         
     end
-
-
 
 
     fprintf(' Final Err = %e \n', Err);
