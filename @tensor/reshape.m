@@ -8,5 +8,11 @@ if prod(t.size) ~= prod(siz)
     error('Number of elements cannot change');
 end
 
-t.data = reshape(t.data,siz);
-t.size = siz;
+if(length(siz)>2)
+    t.data = reshape(t.data,siz);
+    t.size = siz;
+    return;
+else
+    t = reshape(t.data,siz);
+    return;
+end
