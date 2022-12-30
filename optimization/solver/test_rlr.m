@@ -70,26 +70,39 @@ disp('B_nu=');
 disp(B_nu);
 disp(['Approxiamte error=',num2str(AE_nu)]);
 
+disp('Sove linear regression model with RLR- tv-constraint')
+para.pentype='ell_tv';
+para.lambda=0.0001;
+B_tv=rlr(X,Y,para);
+AE_tv=norm(Y-X*B_tv)^2;
+disp('B_tv=');
+disp(B_tv);
+disp(['Approxiamte error=',num2str(AE_tv)]);
 
 % disply results with different torlence
 figure;
 set(gcf,'unit','centimeters','position',[10 10 40 10]);
 
-        subplot(1,4,1);
+        subplot(1,5,1);
 imshow(uint8(B0));
 title('Origin image','fontsize',12);
     
-    subplot(1,4,2);
-imshow(uint8(B));
+    subplot(1,5,2);
+imshow(uint8(B_1));
 title({'Recovered image by RLR-L1' ;['AE=', num2str(AE_1)]},'fontsize',12);
 
-    subplot(1,4,3);
-imshow(uint8(B));
+    subplot(1,5,3);
+imshow(uint8(B_21));
 title({'Recovered image by RLR-L21' ;['AE=', num2str(AE_21)]},'fontsize',12);
 
-    subplot(1,4,4);
-imshow(uint8(B));
+    subplot(1,5,4);
+imshow(uint8(B_nu));
 title({'Recovered image by RLR-nuclear-norm' ;['AE=', num2str(AE_nu)]},'fontsize',12);
+
+
+ subplot(1,5,5);
+imshow(uint8(B_tv));
+title({'Recovered image by RLR-tv' ;['AE=', num2str(AE_tv)]},'fontsize',12);
 
 
 suptitle('Image Recovery for Circles');
