@@ -4,6 +4,7 @@ clear
 clc
 Qpause = true;
 %% test cptensor()
+clc
 disp('%%%%%%%%test cptensor()%%%%%%%%');
 T1 = cptensor();
 display(T1);
@@ -14,7 +15,8 @@ if Qpause
 end
 
 %% test cptensor(F) and cptensor(cp)
-disp('%%%%%%%%test cptensor(F) and cptensor(cp)%%%%%%%%');
+clc
+disp('%%%%%%%%test cptensor(F)%%%%%%%%');
 d = [5,8,10];
 r = 4;
 F = cell(3,1);
@@ -24,22 +26,20 @@ end
 
 T=cptensor(F);
 display(T)
-X=cp2tensor(T);
 
-% test the elements are equal between T and X
-idx = [3,4,6];
-Ti = sum(F{1}(idx(1),:).*F{2}(idx(2),:).*F{3}(idx(3),:));
-Xi = X(idx);
-fprintf("Ti is %d and Xi is %d.\n",Ti,Xi)
+
+disp('%%%%%%%%test cp2tensor()%%%%%%%%');
+
+X=cp2tensor(T);
+sx=size(X);
+
+fprintf("Tensor X is sized of [%d,%d,%d].\n",sx(1),sx(2),sx(3))
 
 % test cptensor(cp),copy an exist cp tensor
-fprintf("-------------------------------------\n")
+disp('%%%%%%%%test cptensor(cp)%%%%%%%%');
 T2 = cptensor(T);
 fprintf("T2 is a copy of T and its tensor format is X2.\n")
 display(T2)
-X2 = cp2tensor(T2);
-X2i = X2(idx);
-fprintf("X2i is %d and Ti is %d.\n",X2i,Ti)
 
 if Qpause
     fprintf("Enter any key to continue,press ctrl+c to exit\n")
@@ -47,6 +47,7 @@ if Qpause
 end
 
 %% test cptensor(W,F)
+clc
 disp('%%%%%%%%test cptensor(W,F)%%%%%%%%');
 W = [2,1,3,2];
 d = [5,8,10];
@@ -72,6 +73,7 @@ if Qpause
 end
 
 %% test (W,F1,F2,...,Fn)
+clc
 disp('%%%%%%%%test cptensor(W,F1,F2,...,Fn)%%%%%%%%');
 disp('%%%%%%%%test cptensor(W,F)%%%%%%%%');
 W = [2,1,3,2];
@@ -98,13 +100,15 @@ if Qpause
 end
 
 %% test cp_als
+clc
 disp('%%%%%%%%test cp-als%%%%%%%%');
 
 X=tensor(rand([3,4,5]));
 R=10;
 T=cp_als(X,R);
 X_hat=cp2tensor(T);
-Err=norm(reshape(double(X)-double(cp2tensor(T)),1,[]))/norm(reshape(double(X),1,[]));%% needs further define
+
+Err=norm(calculate("minus",X,cp2tensor(T)))/norm(X);%% needs further define
 
 fprintf("CP approxiamtion with rank %d achieve approxiamtion erro %d.\n",R,Err)
 
