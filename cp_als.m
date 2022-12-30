@@ -82,7 +82,7 @@ T.rank=R;
     for iter = 1:options.MaxIter
         
         
-        for d = 1:dim         
+        for d = 1:D         
             
             Z = khatrirao_product(U{[1:d-1,d+1:D]},'r');% caculate khatrirao(all U except n, 'r')
             XU = Xd{d}*Z;
