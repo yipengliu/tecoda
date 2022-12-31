@@ -19,14 +19,15 @@ function M = Lshift_n_unfold(varargin)
         error("Input tensor must be tensor class data or high dimension matrix!")
     end
     if isnumeric(varargin{2}) && isnumeric(varargin{3})
-        l = varargin{2};
+        L = varargin{2};
         n = varargin{3};
     else
         error("Please input correct mode vector and original tensor size!")
     end
     sz = size(M);
     ndim = length(sz);
-    shift_list = [l:ndim,1:l-1];
+
+    shift_list = [L:ndim,1:L-1];
     M = permute(M,shift_list);
     M = k_unfold(M,n);
 end

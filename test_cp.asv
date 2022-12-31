@@ -9,14 +9,9 @@ clc
 disp('%%%%%%%%test cptensor()%%%%%%%%');
 T1 = cptensor();
 display(T1);
-if Qpause
-    fprintf("Enter any key to continue,press ctrl+c to exit\n")
-    pause
-end
 
-%% test cptensor(F),cp2tensor() and cptensor(cp)
+%% test cptensor(F)
 clc
-% test cptensor(F),default weight is 1
 disp('%%%%%%%%test cptensor(F)%%%%%%%%');
 d = [5,8,10];
 r = 4;
@@ -24,19 +19,22 @@ F = cell(3,1);
 for n=1:length(d)
     F{n}=rand(d(n),r);
 end
+
 T=cptensor(F);
 display(T)
 
-% test cp2tensor() method
+
 disp('%%%%%%%%test cp2tensor()%%%%%%%%');
+
 X=cp2tensor(T);
 sx=size(X);
+
 fprintf("Tensor X is sized of [%d,%d,%d].\n",sx(1),sx(2),sx(3))
 
-% test cptensor(cp),copy an existing cp tensor
+% test cptensor(cp),copy an exist cp tensor
 disp('%%%%%%%%test cptensor(cp)%%%%%%%%');
 T2 = cptensor(T);
-fprintf("T2 is a copy of T.\n")
+fprintf("T2 is a copy of T and its tensor format is X2.\n")
 display(T2)
 
 if Qpause

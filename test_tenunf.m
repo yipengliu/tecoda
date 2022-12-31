@@ -1,98 +1,191 @@
-%test_cp()
-%   test cpclass
+%test ternuf
+%   test ternuf class,can also refer to ./core/test_unfold.m
 clear
 clc
-T = rand(5,30,56,6,7,8);
+Qpause = true;
+T = rand(5,30,56,6);
 sz = size(T);
-idx = {2,3,4,5,6,7};
-Ti = T(idx{:});
+idx = {2,3,4,5};
+%Ti = T(idx{:});
 % test tensor class input
 % T = tensor(rand(5,30,56,6,7,8));
 % sz = T.size;
 tenunf1 = tenunf();
 
-%% test mode_k_unfold()
-disp('%%%%%%test k_unfold()%%%%%');
+%% test k_unfold()
+clc
+disp('%%%%%%test k_unfold%%%%%');
 % test k_unfold(T)
 Mk = tenunf1.ten2unf('k',T);
-Mki = Mk(2,3+(4-1)*30+(5-1)*30*56+(6-1)*30*56*6+(7-1)*30*56*6*7);
-Tk = tenunf1.unf2ten('k',T,sz);
-Tki = Tk(idx{:});
-fprintf("Ti=%d,Mki=%d,Tki=%d in %d_unfolding.\n",Ti,Mki,Tki,1);
+sm=size(Mk);
+i=2;
+j=3+(4-1)*30+(5-1)*30*56;
+
+fprintf("k unfolding, mode = %d \n  unfolding matrix sized of [%d,%d], element in [%d,%d] is %d.\n",1,sm(1),sm(2),i,j,Mk(i,j));
+fprintf("  matches the value in original tensor T with error %d ! \n",norm(T(idx{:})-Mk(i,j)));
+
+Tk = tenunf1.unf2ten('k',Mk,sz);% fold the unfolding matrix back
+stk=size(Tk);
+fprintf("k folding, mode = %d \n  folding tensor sized of [%d,%d,%d,%d], element in [%d,%d,%d,%d] is %d.\n",1,stk(1),stk(2),stk(3),stk(4),idx{1},idx{2},idx{3},idx{4},Tk(idx{:}));
+fprintf("  matches the value in original tensor T with error %d ! \n",norm(T(idx{:})-Tk(idx{:})));
+disp("----------------------------------------------------------------------------------------------");
+
 % test k_unfold(T,k)
 modeK = 2;
 Mk = tenunf1.ten2unf('k',T,modeK);
-Mki = Mk(2+(3-1)*5,4+(5-1)*56+(6-1)*56*6+(7-1)*56*6*7);
-Tk = tenunf1.unf2ten('k',T,sz);
-Tki = Tk(idx{:});
-fprintf("Ti=%d,Mki=%d,Tki=%d in %d_unfolding.\n",Ti,Mki,Tki,modeK);
-disp("----------------------------------------------------------------------------------------------");
+sm=size(Mk);
+i=2+(3-1)*5;
+j=4+(5-1)*56;
 
+fprintf("k unfolding, mode = %d \n  unfolding matrix sized of [%d,%d], element in [%d,%d] is %d.\n",modeK,sm(1),sm(2),i,j,Mk(i,j));
+fprintf("  matches the value in original tensor T with error %d ! \n",norm(T(idx{:})-Mk(i,j)));
+
+Tk = tenunf1.unf2ten('k',Mk,sz);% fold the unfolding matrix back
+stk=size(Tk);
+fprintf("k folding, mode = %d \n  folding tensor sized of [%d,%d,%d,%d], element in [%d,%d,%d,%d] is %d.\n",modeK,stk(1),stk(2),stk(3),stk(4),idx{1},idx{2},idx{3},idx{4},Tk(idx{:}));
+fprintf("  matches the value in original tensor T with error %d ! \n",norm(T(idx{:})-Tk(idx{:})));
+
+if Qpause
+    fprintf("Enter any key to continue,press ctrl+c to exit\n")
+    pause
+end
 %% test mode_n_unfold()
+clc
 disp('%%%%%%%%test mode_n_unfold%%%%%%%%');
 % test mode_n_unfold(T)
-Mn = tenunf1.ten2unf('n',T);
-Mni = Mn(2,3+(4-1)*30+(5-1)*30*56+(6-1)*30*56*6+(7-1)*30*56*6*7);
-Tn = tenunf1.unf2ten('n',T,1,sz);
-Tni = Tn(idx{:});
-fprintf("Ti=%d,Mni=%d,Tni=%d in mode_%d_unfolding.\n",Ti,Mni,Tni,1);
+Mn = tenunf1.ten2unf('k',T);
+sm=size(Mn);
+i=2;
+j=3+(4-1)*30+(5-1)*30*56;
+
+fprintf("mode n unfolding, mode = %d \n  unfolding matrix sized of [%d,%d], element in [%d,%d] is %d.\n",1,sm(1),sm(2),i,j,Mn(i,j));
+fprintf("  matches the value in original tensor T with error %d ! \n",norm(T(idx{:})-Mn(i,j)));
+
+Tn = tenunf1.unf2ten('n',Mn,1,sz);% fold the unfolding matrix back
+stk=size(Tn);
+fprintf("mode n folding, mode = %d \n  folding tensor sized of [%d,%d,%d,%d], element in [%d,%d,%d,%d] is %d.\n",1,stk(1),stk(2),stk(3),stk(4),idx{1},idx{2},idx{3},idx{4},Tn(idx{:}));
+fprintf("  matches the value in original tensor T with error %d ! \n",norm(T(idx{:})-Tn(idx{:})));
+disp("----------------------------------------------------------------------------------------------");
 %test mode_n_unfold(T,mode)
 modeN = 2;
 Mn = tenunf1.ten2unf('n',T,modeN);
-Mni = Mn(3,2+(4-1)*5+(5-1)*5*56+(6-1)*5*56*6+(7-1)*5*56*6*7);
-Tn = tenunf1.unf2ten('n',Mn,modeN,sz);
-Tni = Tn(idx{:});
-fprintf("Ti=%d,Mni=%d,Tni=%d in mode_%d_unfolding.\n",Ti,Mni,Tni,modeN);
+sm=size(Mn);
+i=3;
+j=2+(4-1)*5+(5-1)*5*56;
+
+fprintf("mode n unfolding, mode = %d\n  unfolding matrix sized of [%d,%d], element in [%d,%d] is %d.\n",modeN,sm(1),sm(2),i,j,Mn(i,j));
+fprintf("  matches the value in original tensor T with error %d ! \n",norm(T(idx{:})-Mn(i,j)));
+
+Tn = tenunf1.unf2ten('n',Mn,modeN,sz);% fold the unfolding matrix back
+stk=size(Tn);
+fprintf("mode n folding, mode = %d,\n  folding tensor sized of [%d,%d,%d,%d], element in [%d,%d,%d,%d] is %d.\n",modeN,stk(1),stk(2),stk(3),stk(4),idx{1},idx{2},idx{3},idx{4},Tn(idx{:}));
+fprintf("  matches the value in original tensor T with error %d ! \n",norm(T(idx{:})-Tn(idx{:})));
+disp("----------------------------------------------------------------------------------------------");
 %test mode_n_unfold(T,mode,order)
 modeN = 2;
 order = 'i';
 Mn = tenunf1.ten2unf('n',T,modeN,order);
-Mni = Mn(3,4+(5-1)*56+(6-1)*56*6+(7-1)*56*6*7+(2-1)*56*6*7*8);
-Tn = tenunf1.unf2ten('n',Mn,modeN,sz,order);
-Tni = Tn(idx{:});
-fprintf("Ti=%d,Mni=%d,Tni=%d in mode_%d_unfolding.\n",Ti,Mni,Tni,modeN);
+sm=size(Mn);
+i=3;
+j=4+(5-1)*56+(2-1)*56*6;
+
+fprintf("mode n unfolding, mode = %d, order  = %s\n  unfolding matrix sized of [%d,%d], element in [%d,%d] is %d.\n",modeN,order,sm(1),sm(2),i,j,Mn(i,j));
+fprintf("  matches the value in original tensor T with error %d ! \n",norm(T(idx{:})-Mn(i,j)));
+
+Tn = tenunf1.unf2ten('n',Mn,modeN,sz,order);% fold the unfolding matrix back
+stk=size(Tn);
+fprintf("mode n folding, mode = %d, order  = %s\n  folding tensor sized of [%d,%d,%d,%d], element in [%d,%d,%d,%d] is %d.\n",modeN,order,stk(1),stk(2),stk(3),stk(4),idx{1},idx{2},idx{3},idx{4},Tn(idx{:}));
+fprintf("  matches the value in original tensor T with error %d ! \n",norm(T(idx{:})-Tn(idx{:})));
 disp("----------------------------------------------------------------------------------------------");
 
+if Qpause
+    fprintf("Enter any key to continue,press ctrl+c to exit\n")
+    pause
+end
 %% test mode_n1n2_unfold()
+clc
 disp('%%%%%%%%test mode_n1n2_unfold%%%%%%%%');
-% test mode_n1n2_unfold(T),just the same to mode_n1_unfold(T,1)
+% test mode_n1n2_unfold(T),just the same to mode_n_unfold(T,1)
 Mn1n2 = tenunf1.ten2unf('n1n2',T);
-Mn1n2i = Mn1n2(2,3+(4-1)*30+(5-1)*30*56+(6-1)*30*56*6+(7-1)*30*56*6*7);
-Tn1n2 = tenunf1.unf2ten('n',Mn1n2,1,sz);
-Tn1n2i = Tn1n2(idx{:});
-fprintf("Ti=%d,Mn1n2i=%d,Tni=%d in mode_%d_unfolding.\n",Ti,Mn1n2i,Tn1n2i,1);
+sm=size(Mn1n2);
+i=2;
+j=3+(4-1)*30+(5-1)*30*56;
+
+fprintf("mode n unfolding, mode = %d \n  unfolding matrix sized of [%d,%d], element in [%d,%d] is %d.\n",1,sm(1),sm(2),i,j,Mn1n2(i,j));
+fprintf("  matches the value in original tensor T with error %d ! \n",norm(T(idx{:})-Mn1n2(i,j)));
+
+Tn1n2 = tenunf1.unf2ten('n',Mn1n2,1,sz);% fold the unfolding matrix back
+stk=size(Tn1n2);
+fprintf("mode n folding, mode = %d \n  folding tensor sized of [%d,%d,%d,%d], element in [%d,%d,%d,%d] is %d.\n",1,stk(1),stk(2),stk(3),stk(4),idx{1},idx{2},idx{3},idx{4},Tn1n2(idx{:}));
+fprintf("  matches the value in original tensor T with error %d ! \n",norm(T(idx{:})-Tn1n2(idx{:})));
+disp("----------------------------------------------------------------------------------------------");
+
 % test mode_n1n2_unfold(T,n)
-n=[4,2];
+n=[3,2];
 Mn1n2 = tenunf1.ten2unf('n1n2',T,n);
-Mn1n2i = Mn1n2(5,3,2+(4-1)*5+(6-1)*5*56+(7-1)*5*56*7);
-Tn1n2 = tenunf1.unf2ten('n1n2',Mn1n2,n,sz);
-Tn1n2i = Tn1n2(idx{:});
-fprintf("Ti=%d,Mn1n2i=%d,Tni=%d in mode_%d_%d_unfolding.\n",Ti,Mn1n2i,Tn1n2i,n(1),n(2));
+sm=size(Mn1n2);
+i=4;
+j=3;
+k=2+(5-1)*5;
+
+fprintf("mode n1n2 unfolding, mode = [%d,%d] \n  unfolding tensor sized of [%d,%d,%d], element in [%d,%d,%d] is %d.\n",n(1),n(2),sm(1),sm(2),sm(3),i,j,k,Mn1n2(i,j,k));
+fprintf("  matches the value in original tensor T with error %d ! \n",norm(T(idx{:})-Mn1n2(i,j,k)));
+
+Tn1n2 = tenunf1.unf2ten('n1n2',Mn1n2,n,sz);% fold the unfolding matrix back
+stk=size(Tn1n2);
+fprintf("mode n folding, mode = [%d,%d] \n  folding tensor sized of [%d,%d,%d,%d], element in [%d,%d,%d,%d] is %d.\n",n(1),n(2),stk(1),stk(2),stk(3),stk(4),idx{1},idx{2},idx{3},idx{4},Tn1n2(idx{:}));
+fprintf("  matches the value in original tensor T with error %d ! \n",norm(T(idx{:})-Tn1n2(idx{:})));
+disp("----------------------------------------------------------------------------------------------");
 % test mode_n1n2_unfold(T,n1,n2,...,nn)
-n=[4,2];
+n=[3,2];
 Mn1n2 = tenunf1.ten2unf('n1n2',T,n(1),n(2));
-Mn1n2i = Mn1n2(5,3,2+(4-1)*5+(6-1)*5*56+(7-1)*5*56*7);
-Tn1n2 = tenunf1.unf2ten('n1n2',Mn1n2,n(1),n(2),sz);
-Tn1n2i = Tn1n2(idx{:});
-fprintf("Ti=%d,Mn1n2i=%d,Tni=%d in mode_%d_%d_unfolding.\n",Ti,Mn1n2i,Tn1n2i,n(1),n(2));
-disp("----------------------------------------------------------------------------------------------");
+sm=size(Mn1n2);
+i=4;
+j=3;
+k=2+(5-1)*5;
 
+fprintf("mode n1n2 unfolding, mode = [%d,%d] \n  unfolding tensor sized of [%d,%d,%d], element in [%d,%d,%d] is %d.\n",n(1),n(2),sm(1),sm(2),sm(3),i,j,k,Mn1n2(i,j,k));
+fprintf("  matches the value in original tensor T with error %d ! \n",norm(T(idx{:})-Mn1n2(i,j,k)));
+
+Tn1n2 = tenunf1.unf2ten('n1n2',Mn1n2,n(1),n(2),sz);% fold the unfolding matrix back
+stk=size(Tn1n2);
+fprintf("mode n folding, mode = [%d,%d] \n  folding tensor sized of [%d,%d,%d,%d], element in [%d,%d,%d,%d] is %d.\n",n(1),n(2),stk(1),stk(2),stk(3),stk(4),idx{1},idx{2},idx{3},idx{4},Tn1n2(idx{:}));
+fprintf("  matches the value in original tensor T with error %d ! \n",norm(T(idx{:})-Tn1n2(idx{:})));
+
+if Qpause
+    fprintf("Enter any key to continue,press ctrl+c to exit\n")
+    pause
+end
 %% test Lshift_n_unfold()
+clc
 disp('%%%%%%test Lshift_n_unfold()%%%%%');
-L = 4;
+Lshift = 3;
 n=2;
-MLn = tenunf1.ten2unf('Ln',T,L,n);
-MLni = MLn(5+(6-1)*6,7+(2-1)*8+(3-1)*8*5+(4-1)*8*5*30);
-TLn = tenunf1.unf2ten('Ln',MLn,L,sz);
-TLni = TLn(idx{:});
-fprintf("Ti=%d,MLni=%d,TLni=%d in %dshift_mode%d_unfolding.\n",Ti,MLni,TLni,L,n);
-disp("----------------------------------------------------------------------------------------------");
+MLn = tenunf1.ten2unf('Ln',T,Lshift,n);
+sm=size(MLn);
+i=4+(5-1)*56;
+j=2+(3-1)*5;
 
+fprintf("L-shift mode n unfolding, Lshift = %d, mode = %d\n  unfolding matrix sized of [%d,%d], element in [%d,%d] is %d.\n",Lshift,n,sm(1),sm(2),i,j,MLn(i,j));
+fprintf("  matches the value in original tensor T with error %d ! \n",norm(T(idx{:})-MLn(i,j)));
+
+TLn = tenunf1.unf2ten('Ln',MLn,Lshift,sz);% fold the unfolding matrix back
+stk=size(TLn);
+fprintf("L-shift mode n folding, Lshift = %d, mode = %d,\n  folding tensor sized of [%d,%d,%d,%d], element in [%d,%d,%d,%d] is %d.\n",Lshift,n,stk(1),stk(2),stk(3),stk(4),idx{1},idx{2},idx{3},idx{4},TLn(idx{:}));
+fprintf("  matches the value in original tensor T with error %d ! \n",norm(T(idx{:})-TLn(idx{:})));
+
+if Qpause
+    fprintf("Enter any key to continue,press ctrl+c to exit\n")
+    pause
+end
 %% test balanced_unfold()
 disp('%%%%%%test balanced_unfold()%%%%%');
 [Mb,L,n] = tenunf1.ten2unf('b',T);
-fprintf("Lbest = %d, nbest = %d.\n",L,n);
+sm=size(Mb);
+fprintf(['balanced unfolding, best_Lshift = %d, best_modeN = %d,\n  unfolding matrix sized of [',repmat(' %d',1,length(sm)),'].\n'],L,n,sm(:));
+
 Tb = tenunf1.unf2ten('b',Mb,L,sz);
-Tbi = Tb(idx{:});
-fprintf("Ti=%d,Tbi=%d.\n",Ti,Tbi);
-disp("----------------------------------------------------------------------------------------------");
+stk=size(Tb);
+fprintf("balanced folding, Lshift = %d, mode = %d,\n  folding tensor sized of [%d,%d,%d,%d], element in [%d,%d,%d,%d] is %d.\n",L,n,stk(1),stk(2),stk(3),stk(4),idx{1},idx{2},idx{3},idx{4},Tb(idx{:}));
+fprintf("  matches the value in original tensor T with error %d ! \n",norm(T(idx{:})-Tb(idx{:})));
+
