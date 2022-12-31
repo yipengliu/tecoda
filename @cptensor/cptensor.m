@@ -13,7 +13,6 @@ classdef cptensor
         weights
         factors
         rank
-        ndims
         size
     end
     methods
@@ -42,7 +41,6 @@ classdef cptensor
                 CP.weights = [];
                 CP.factors = {};
                 CP.rank = 0;
-                CP.ndims = 0;
                 CP.size = [];
                 return;
             end
@@ -56,11 +54,11 @@ classdef cptensor
             % Cell construtor
             if nargin == 1 && isa(varargin{1},'cell')
                 CP.factors = varargin{1};    
-                CP.ndims = numel(CP.factors);
+                ndims = numel(CP.factors);
                 CP.rank = size(CP.factors{1},2);
                 CP.weights = ones(CP.rank,1);
-                CP.size = [size(CP.factors{1},1),zeros(1,CP.ndims-1)];
-                for i = 2 : CP.ndims
+                CP.size = [size(CP.factors{1},1),zeros(1,ndims-1)];
+                for i = 2 : ndims
                     sz = size(CP.factors{i});
                     if sz(2) ~= CP.rank
                         error('Second dimension of factor matrix %d must be equal to the first matrix!',i)
@@ -75,10 +73,10 @@ classdef cptensor
             if nargin == 2 && isvector(varargin{1}) && isa(varargin{2},'cell')
                 CP.weights = varargin{1};
                 CP.factors = varargin{2};    
-                CP.ndims = numel(CP.factors);
+                ndims = numel(CP.factors);
                 CP.rank = size(CP.factors{1},2);
-                CP.size = [size(CP.factors{1},1),zeros(1,CP.ndims-1)];
-                for i = 2 : CP.ndims
+                CP.size = [size(CP.factors{1},1),zeros(1,ndims-1)];
+                for i = 2 : ndims
                     sz = size(CP.factors{i});
                     if sz(2) ~= CP.rank
                         error('Second dimension of factor matrix %d must be equal to the first matrix!',i)
@@ -93,10 +91,10 @@ classdef cptensor
             if nargin >= 2 && isvector(varargin{1}) && ismatrix(varargin(2:end))
                 CP.weights = varargin{1};
                 CP.factors = varargin(2:end);
-                CP.ndims = numel(CP.factors);
+                ndims = numel(CP.factors);
                 CP.rank = size(CP.factors{1},2);
-                CP.size = [size(CP.factors{1},1),zeros(1,CP.ndims-1)];
-                for i = 2 : CP.ndims
+                CP.size = [size(CP.factors{1},1),zeros(1,ndims-1)];
+                for i = 2 : ndims
                     sz = size(CP.factors{i});
                     if sz(2) ~= CP.rank
                         error('Second dimension of factor matrix %d must be equal to the first matrix!',i)

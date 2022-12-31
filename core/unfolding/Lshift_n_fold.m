@@ -18,15 +18,16 @@ function T = Lshift_n_fold(varargin)
         error("Input tensor must be tensor class data or high dimension matrix!")
     end
     if isnumeric(varargin{2}) && isnumeric(varargin{3})
-        l = varargin{2};
+        L = varargin{2};
         sz = varargin{3};
     else
         error("Please input correct mode vector and original tensor size!")
     end
+
     ndim = length(sz);
-    sz = [sz(l:ndim),sz(1:l-1)];
+    sz = [sz(L:ndim),sz(1:L-1)];
     T = k_fold(T,sz);
     
-    shift_list = [l:ndim,1:l-1];
+    shift_list = [L:ndim,1:L-1];
     T = ipermute(T,shift_list);
 end
