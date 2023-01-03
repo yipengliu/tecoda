@@ -25,10 +25,10 @@ classdef TKtensor
                 TK = varargin{1};
                 return ;
             end
-            if ~isa(varargin{1},'tensor')
-                error('Core must be a tensor.')
+            if ~isa(varargin{1},'tensor')&&~isa(varargin{1},'double')
+                error('Core must be a tensor or a double array.');
             else
-                TK.core = varargin{1};
+                TK.core = tensor(varargin{1});
                 if isa(varargin{2},'cell')
                     TK.factors = varargin{2};
                 else
