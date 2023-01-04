@@ -7,7 +7,7 @@ function y = norm_tv(I,varargin)
 %   Output parameters:
 %         y     : Norm
 %
-%   Compute the 2-dimentional TV norm of I. If the input I is a cube. This
+%   Compute the 2(3)-dimentional TV norm of I. If the input I is a cube. This
 %   function will compute the norm of all image and return a vector of norms.
 %
 if nargin > 1
@@ -15,14 +15,26 @@ if nargin > 1
 else
     flag = 0;
 end
-[dx, dy] = gradient_op(I);
+[dx, dy, dz] = gradient_op(I);
 
 if flag == 0
-    tmp = sqrt(abs(dx).^2 + abs(dy).^2);
+    if dz ~= -1
+        tmp = sqrt(abs(dx).^2 + abs(dy).^2 + abs(dz).^2);
+    else
+        tmp = sqrt(abs(dx).^2 + abs(dy).^2);
+    end
 else
-    tmp = abs(dx) + abs(dy);
+    if dz ~= -1
+        tmp = abs(dx) + abs(dy) + abs(dz);
+    else
+        tmp = abs(dx) + abs(dy);
+    end
 end
 
-y = reshape(sum(sum(tmp,1),2),[],1);
+if dz ~= -1
+    y = reshape(sum(sum(sum(tmp,1),2),3),[],1);
+else
+    y = reshape(sum(sum(tmp,1),2),[],1);
+end
 
 end
