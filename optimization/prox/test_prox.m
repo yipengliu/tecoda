@@ -35,5 +35,8 @@ t1=prox_tensor_nuclear_norm(tensor1,0.26);
 tk1=prox_tk_nuclear_norm(tensor1,0.24,0.5);
 %}
 %% prox_tv
-
+tv1=prox_tv(matrix1,0.244);
+tv2=prox_tv(matrix1,0.244,1);
+tv3=prox_tv(tensor1,0.244);
+tv4=prox_tv(tensor2,0.244,1);
 %% norm
