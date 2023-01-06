@@ -55,7 +55,7 @@ T2 = TKtensor(T);
 fprintf("T2 is a copy of T.\n")
 display(T2)
 
-ERR=norm(calculate("minus",TK2tensor(T),TK2tensor(T2)));
+ERR=norm(calculate('minus',TK2tensor(T),TK2tensor(T2)));
 
 if ERR==0
     fprintf("T2 equels T.\n")
@@ -77,8 +77,8 @@ T1=HOSVD(X,R);
 T2=HOOI(X,R);
 X1 = TK2tensor(T1);
 X2 = TK2tensor(T2);
-Err1 = norm(calculate("minus", X1, X));
-Err2 = norm(calculate("minus", X2, X));
+Err1 = norm(calculate('minus', X1, X));
+Err2 = norm(calculate('minus', X2, X));
 
 nx=norm(X);
 
@@ -106,8 +106,8 @@ T1=HOSVD(X,R);
 T2=HOOI(X,R);
 X1 = TK2tensor(T1);
 X2 = TK2tensor(T2);
-Err1 = norm(calculate("minus", X1, X));
-Err2 = norm(calculate("minus", X2, X));
+Err1 = norm(calculate('minus', X1, X));
+Err2 = norm(calculate('minus', X2, X));
 nx=norm(X);
 
 fprintf("HOSVD with rank [%d,%d,%d] achieve approximation error %d, relative error %d.\n",R(1),R(2),R(3),Err1,Err1/nx);
@@ -119,8 +119,8 @@ T3=HOSVD(X,R);
 T4=HOOI(X,R);
 X3 = TK2tensor(T3);
 X4 = TK2tensor(T4);
-Err3 = norm(calculate("minus", X3, X));
-Err4 = norm(calculate("minus", X4, X));
+Err3 = norm(calculate('minus', X3, X));
+Err4 = norm(calculate('minus', X4, X));
 nx=norm(X);
 
 fprintf("HOSVD with rank [%d,%d,%d] achieve approximation error %d, relative error %d.\n",R(1),R(2),R(3),Err3,Err3/nx);
