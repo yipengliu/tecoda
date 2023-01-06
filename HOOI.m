@@ -17,7 +17,7 @@ function TK = HOOI(X, rank, options)
             TK.factors{j} = u(:, 1:rank(j));
         end
         TK.core = tensor(mode_n_product(X, TK.factors));
-        error = norm(calculate("minus", TK.core, lostcore));
+        error = norm(calculate('minus', TK.core, lostcore));
         if error < options.Err, break; end
     end
     TK.core = mode_n_product(X, TK.factors);
