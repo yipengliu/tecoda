@@ -104,19 +104,19 @@ classdef tensor
                 error('Second argument must be a row vector.');
             end
             %zero tensor
-            if(varargin{1}=="zeros")
+            if(varargin{1}=='zeros')
                 data = zeros(siz);
             end
             %one tensor
-            if(varargin{1}=="ones")
+            if(varargin{1}=='ones')
                 data = ones(siz);
             end
             %rand tensor
-            if(varargin{1}=="rand")
+            if(varargin{1}=='rand')
                 data = rand(siz);
             end
             %iden tensor
-            if(varargin{1}=="iden")
+            if(varargin{1}=='iden')
                 if(length(siz)>3)
                     error('Size of identity tensor must be three');
                 end
@@ -128,17 +128,17 @@ classdef tensor
                 data(:,:,1)= identity;
             end
             %diag tensor
-            if(varargin{1}=="diag")
+            if(varargin{1}=='diag')
                 v = varargin{2};
                 N = numel(v);
                 siz = repmat(N,1,N);
                 data = zeros(siz);
                 subs = repmat((1:N)',1,length(siz));
-                ind = tt_sub2ind(siz,subs);
+                ind = t_sub2ind(siz,subs);
                 data(ind) = v;
             end
             %f_diag tensor
-            if(varargin{1}=="fdiag")
+            if(varargin{1}=='fdiag')
                 mat = varargin{2};
                 if(ndims(mat)~=2)
                     error('Second argument must be a matrix');
