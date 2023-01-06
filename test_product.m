@@ -4,7 +4,7 @@
 dim=[3,3,5];
 A=rand(dim);
 A=tensor(A);
-B=tensor("iden",dim);
+B=tensor('iden',dim);
 C=inner_product(A,B);
 
 %% outer product
