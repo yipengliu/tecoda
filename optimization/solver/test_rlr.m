@@ -105,5 +105,4 @@ imshow(uint8(B_tv));
 title({'Recovered image by RLR-tv' ;['AE=', num2str(AE_tv)]},'fontsize',12);
 
 
-suptitle('Image Recovery for Circles');
 
