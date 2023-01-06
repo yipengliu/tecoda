@@ -110,7 +110,7 @@ T.rank=R;
         T.factors=U;
         
         
-        Err=norm(calculate("minus",X,cp2tensor(T)));%% calculate the approximation error
+        Err=norm(calculate('minus',X,cp2tensor(T)));%% calculate the approximation error
       
         
         % Check for convergence

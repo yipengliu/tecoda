@@ -106,7 +106,7 @@ R=10;
 T=cp_als(X,R);
 X_hat=cp2tensor(T);
 
-Err=norm(calculate("minus",X,cp2tensor(T)))/norm(X);%% needs further define
+Err=norm(calculate('minus',X,cp2tensor(T)))/norm(X);%% needs further define
 
 fprintf("CP approximation with rank %d achieve approximation erro %d.\n",R,Err)
 
@@ -127,7 +127,7 @@ X=tensor(X);
 R=10;
 T=cp_als(X,R);
 X1 = cp2tensor(T);
-Err1 = norm(calculate("minus", X1, X));
+Err1 = norm(calculate('minus', X1, X));
 nx=norm(X);
 
 fprintf("CP approximation with rank %d achieve approximation error %d, relative error %d.\n",R,Err1,Err1/nx);
@@ -137,7 +137,7 @@ fprintf("CP approximation with rank %d achieve approximation error %d, relative 
 R=50;
 T=cp_als(X,R);
 X2 = cp2tensor(T);
-Err2 = norm(calculate("minus", X2, X));
+Err2 = norm(calculate('minus', X2, X));
 nx=norm(X);
 
 fprintf("CP approximation with rank %d achieve approximation error %d, relative error %d.\n",R,Err2,Err2/nx);
