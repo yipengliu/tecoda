@@ -5,12 +5,18 @@ classdef tenunf
     
     properties
         data
+        kunf
+        nunf
     end
     
     methods
         function obj = tenunf()
             %UNFOLDING 构造此类的实例
             %   此处显示详细说明
+        end
+        
+        function obj = kunf_all()
+            obj.data
         end
         
         % tensor to unfolding matrix
