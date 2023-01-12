@@ -1,0 +1,25 @@
+X=double(imread('sherlock.jpg'));
+X=tensor(X);
+[U,S,V]=t_SVD(X);
+Xhat=t_product(U,S);
+Xhat=t_product(Xhat,V);
+nx=norm(X);
+Err=norm(calculate('minus', X, Xhat));
+fprintf("t-SVD approximation achieve approximation error %d, relative error %d.\n",Err,Err/nx);
+% function Xt=transpose(X)
+%     Xt=tensor('zeros',X.size);
+%     Xt(:,:,1)=Xt(:,:,1)';
+%     I3=numel(X.size);
+%     for i3=2:numel(X.size)
+%         Xt(:,:,i3)=X(:,:,I3-i3+2)';
+%     end
+% end
+function Xt=transpose(X)
+    Xt=tensor('zeros',[X.size(1),X.s);
+    Xt
+    Xt(:,:,1)=Xt(:,:,1)';
+    I3=numel(X.size);
+    for i3=2:numel(X.size)
+        Xt(:,:,i3)=X(:,:,I3-i3+2)';
+    end
+end
