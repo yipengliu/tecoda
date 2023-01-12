@@ -12,6 +12,12 @@ idx = {2,3,4,5};
 % sz = T.size;
 tenunf1 = tenunf();
 
+%% test unf_all()
+tenunf1.kunf_all(T);
+tenunf1.nunf_all(T);
+tenunf1.bunf_all(T);
+% tenunf1,clear('a');
+
 %% test k_unfold()
 clc
 disp('%%%%%%test k_unfold%%%%%');
