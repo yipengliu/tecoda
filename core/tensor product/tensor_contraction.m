@@ -6,21 +6,31 @@ function Out = tensor_contraction(T1, T2, m, n)
     %   n - The modes of T2 used to conduct contraction 
     % Output:
     %   X - the contraction result
-
-    L1 = size(T1);
-    L2 = size(T2);
-    index1 = 1:length(size(T1));
-    index2 = 1:length(size(T2));
+    if ~isa(T1,'tensor')
+        t1 = tensor(T1);
+    else
+        t1 = T1;
+    end
+    if ~isa(T2,'tensor')
+        t2 = tensor(T2);
+    else
+        t2 = T2;
+    end
+        
+    L1 = size(t1);
+    L2 = size(t2);
+    index1 = 1:length(size(t1));
+    index2 = 1:length(size(t2));
     index1(m) = [];
     index2(n) = [];
-    tempXX = reshape(permute(T1, [index1,m]), [prod(L1(index1)),prod(L1(m))]);
+    tempXX = reshape(permute(t1, [index1,m]), [prod(L1(index1)),prod(L1(m))]);
     tempYY = reshape(permute(T2, [n,index2]), [prod(L2(n)),prod(L2(index2))]);
-    temp = tempXX.data * tempYY.data;
+    temp = tempXX * tempYY;
 
-    Out = reshape(temp, [L1(index1),L2(index2)]);
+    Out = reshape(tensor(temp), [L1(index1),L2(index2)]);
     
-    if isa(T1,'tensor') && ~ismatrix(Out)
-        Out = tensor(Out);
+    if (~isa(t1,'tensor') && ~isa(t2,'tensor')) && ismatrix(Out)
+        Out = Out.data;
     end
 end
 
