@@ -21,30 +21,35 @@ function G = TR_ALS(X,options)
     for iter = 1 : options.MaxIter
         for i = 1 : N
             if i == N
-                B{i} = G{1};
+                B{i} = G.factors{1};
                 mIdx = 2:i-1;
             else
-                B{i} = G{i+1};
+                B{i} = G.factors{i+1};
                 mIdx = cat(2, i+2:N, 1:i-1);
             end
             for m = mIdx
-                B{i} = tensor_contraction(B{i}, G{m}, ndims(B{i}), 1);
+                B{i} = tensor_contraction(B{i}, G.factors{m}, ndims(B{i}), 1);
             end
+            mIdx = size(B{i});
             idx = 1 : N;
             idx(i) = [];
             B{i} = reshape(B{i}, [R(i+1), prod(I(idx)), R(i)]);
             % tensor类的numel 有问题
             Bn{i} = reshape(permute(B{i}, [3,1,2]), [R(i)*R(i+1), numel(B{i}.data)/(R(i)*R(i+1))])';
             
-            Gsize = size(G{i});
-            
+            Gsize = size(G.factors{i});
+
+
             XnT = mode_n_unfold(X, i, 'i').';
-            G{i} = reshape(tensor((Bn{i} \ XnT).'),Gsize);
-            G{i} = reshape(mode_n_fold(G{i},2,Gsize), Gsize);
+            temp = reshape(tensor((Bn{i} \ XnT).'),Gsize);
+            G.factors{i} = reshape(mode_n_fold(temp,2,Gsize), Gsize);
+
         end
         % Compute current relative error
-        Y = cores2tr(G);
+        Y = TR2tensor(G);
         error = norm(calculate('minus', X, Y)) / normX;
+
         if error < options.Err, break; end
     end
+    G = TRtensor(G);
 end

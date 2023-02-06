@@ -29,5 +29,6 @@ function [G,R] = TR_SVD(X,options)
     for i = 1 : length(G)
        G{i} = tensor(G{i}); 
     end
-    G{N} = reshape(G{N}, [size(G{N}), 1]);    
+    G{N} = reshape(G{N}, [size(G{N}), 1]);   
+    G = TRtensor(G);
 end
