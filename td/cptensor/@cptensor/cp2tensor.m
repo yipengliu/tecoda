@@ -1,5 +1,5 @@
-function T = cp2tensor(CP)
-%cp2tensor transform a CP format tensor into a dense tensor
+function T = CP2tensor(CP)
+%CP2tensor transform a CP format tensor into a dense tensor
 
     minS=minSplit(CP.size);
     if (minS==length(CP.size))
