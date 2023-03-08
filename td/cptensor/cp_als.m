@@ -1,4 +1,4 @@
-function T = cp_als(X,R,options)
+function T = CP_ALS(X,R,options)
 %CP_ALS Compute a CP decomposition of an given tensor.
 %
 %   T = CP_ALS(X,R) computes best rank-R CP approximation of tensor X using an alternating least-squares algorithm.
@@ -57,7 +57,7 @@ else
     end
 end
 
-T = cptensor();
+T = CPtensor();
 T.size=dim;
 T.rank=R;
 %% Main Loop
@@ -110,7 +110,7 @@ T.rank=R;
         T.factors=U;
         
         
-        Err=norm(calculate('minus',X,cp2tensor(T)));%% calculate the approximation error
+        Err=norm(calculate('minus',X,CP2tensor(T)));%% calculate the approximation error
       
         
         % Check for convergence

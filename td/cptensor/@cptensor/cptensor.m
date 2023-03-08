@@ -8,7 +8,7 @@
 %ouweiting7@gmail.com
 %License:
 %---------------------------
-classdef cptensor
+classdef CPtensor
     properties
         weights
         factors
@@ -16,25 +16,25 @@ classdef cptensor
         size
     end
     methods
-        function CP = cptensor(varargin)
+        function CP = CPtensor(varargin)
         % cptensor is CANDECOMP/PARAFAC(CP) format tensor(decomposed).
-        %   CP = cptensor() creates an empty cptensor
+        %   CP = CPtensor() creates an empty cptensor
 
-        %   CP = cptensor(cp) copy a cptensor cp to new cptensor CP.
+        %   CP = CPtensor(cp) copy a cptensor cp to new cptensor CP.
 
-        %   CP = cptensor(F) uses cell F, where F = {F1,F2,...Fn}, and 
+        %   CP = CPtensor(F) uses cell F, where F = {F1,F2,...Fn}, and 
         %   assume weights of each factor matrix Fi is 1.
 
-        %   CP = cptensor(W,F) uses weightvector W and cell F,where F =
+        %   CP = CPtensor(W,F) uses weightvector W and cell F,where F =
         %   {F1,F2,...Fn}. W[i] is the weight of factor matrix F{i}
 
-        %   CP = cptensor(W,F1,F2,...,Fn) uses weightvector W and a list
+        %   CP = CPtensor(W,F1,F2,...,Fn) uses weightvector W and a list
         %   of factor matrix Fi.
 
         % Examples:
-        %   CP = cptensor({rand(3,4),rand(5,4),rand(7,4)})
-        %   CP = cptensor([1,2,1],{rand(3,4),rand(5,4),rand(7,4)})
-        %   CP = cptensor([1,2,1],rand(3,4),rand(5,4),rand(7,4))
+        %   CP = CPtensor({rand(3,4),rand(5,4),rand(7,4)})
+        %   CP = CPtensor([1,2,1],{rand(3,4),rand(5,4),rand(7,4)})
+        %   CP = CPtensor([1,2,1],rand(3,4),rand(5,4),rand(7,4))
 
             % Empty construtor
             if nargin == 0
@@ -46,7 +46,7 @@ classdef cptensor
             end
 
             % cptensor construtor
-            if nargin == 1 && isa(varargin{1},'cptensor')
+            if nargin == 1 && isa(varargin{1},'CPtensor')
                 CP = varargin{1};
                 return;
             end
@@ -105,7 +105,7 @@ classdef cptensor
                 return;
             end             
 
-           error('Invalid cptensor constructor');
+           error('Invalid CPtensor constructor');
            
         end
    end

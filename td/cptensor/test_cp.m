@@ -1,41 +1,41 @@
-%test_cp()
-%   test cpclass
+%test_CP()
+%   test CPclass
 clear
 clc
 Qpause = true;
-%% test cptensor()
+%% test CPtensor()
 clc
-% test cptensor()
-disp('%%%%%%%%test cptensor()%%%%%%%%');
-T1 = cptensor();
+% test CPtensor()
+disp('%%%%%%%%test CPtensor()%%%%%%%%');
+T1 = CPtensor();
 display(T1);
 if Qpause
     fprintf("Enter any key to continue,press ctrl+c to exit\n")
     pause
 end
 
-%% test cptensor(F),cp2tensor() and cptensor(cp)
+%% test CPtensor(F),CP2tensor() and CPtensor(CP)
 clc
-% test cptensor(F),default weight is 1
-disp('%%%%%%%%test cptensor(F)%%%%%%%%');
+% test CPtensor(F),default weight is 1
+disp('%%%%%%%%test CPtensor(F)%%%%%%%%');
 d = [5,8,10];
 r = 4;
 F = cell(3,1);
 for n=1:length(d)
     F{n}=rand(d(n),r);
 end
-T=cptensor(F);
+T=CPtensor(F);
 display(T)
 
-% test cp2tensor() method
-disp('%%%%%%%%test cp2tensor()%%%%%%%%');
-X=cp2tensor(T);
+% test CP2tensor() method
+disp('%%%%%%%%test CP2tensor()%%%%%%%%');
+X=CP2tensor(T);
 sx=size(X);
 fprintf("Tensor X is sized of [%d,%d,%d].\n",sx(1),sx(2),sx(3))
 
-% test cptensor(cp),copy an existing cp tensor
-disp('%%%%%%%%test cptensor(cp)%%%%%%%%');
-T2 = cptensor(T);
+% test CPtensor(CP),copy an existing CP tensor
+disp('%%%%%%%%test CPtensor(CP)%%%%%%%%');
+T2 = CPtensor(T);
 fprintf("T2 is a copy of T.\n")
 display(T2)
 
@@ -44,9 +44,9 @@ if Qpause
     pause
 end
 
-%% test cptensor(W,F)
+%% test CPtensor(W,F)
 clc
-disp('%%%%%%%%test cptensor(W,F)%%%%%%%%');
+disp('%%%%%%%%test CPtensor(W,F)%%%%%%%%');
 W = [2,1.5,3,2];
 d = [5,8,10];
 r = 4;
@@ -55,9 +55,9 @@ for n=1:length(d)
     F{n}=rand(d(n),r);
 end
 
-T=cptensor(W,F);
+T=CPtensor(W,F);
 display(T)
-X=cp2tensor(T);
+X=CP2tensor(T);
 
 % test the elements are equal between T and X
 idx = [3,4,6];
@@ -72,8 +72,8 @@ end
 
 %% test (W,F1,F2,...,Fn)
 clc
-disp('%%%%%%%%test cptensor(W,F1,F2,...,Fn)%%%%%%%%');
-disp('%%%%%%%%test cptensor(W,F)%%%%%%%%');
+disp('%%%%%%%%test CPtensor(W,F1,F2,...,Fn)%%%%%%%%');
+disp('%%%%%%%%test CPtensor(W,F)%%%%%%%%');
 W = [2,1,3,2];
 d = [5,8,10];
 r = 4;
@@ -82,9 +82,9 @@ for n=1:length(d)
     F{n}=rand(d(n),r);
 end
 
-T=cptensor(W,F{1},F{2},F{3});
+T=CPtensor(W,F{1},F{2},F{3});
 display(T)
-X=cp2tensor(T);
+X=CP2tensor(T);
 
 % test the elements are equal between T and X
 idx = [3,4,6];
@@ -97,16 +97,16 @@ if Qpause
     pause
 end
 
-%% test cp_als
+%% test CP_ALS
 clc
-disp('%%%%%%%%test cp-als%%%%%%%%');
+disp('%%%%%%%%test CP_ALS%%%%%%%%');
 
 X=tensor(rand([3,4,5]));
 R=10;
-T=cp_als(X,R);
-X_hat=cp2tensor(T);
+T=CP_ALS(X,R);
+X_hat=CP2tensor(T);
 
-Err=norm(calculate('minus',X,cp2tensor(T)))/norm(X);%% needs further define
+Err=norm(calculate('minus',X,CP2tensor(T)))/norm(X);%% needs further define
 
 fprintf("CP approximation with rank %d achieve approximation erro %d.\n",R,Err)
 
@@ -117,16 +117,16 @@ if Qpause
 end
 
 
-%% test cp_als with real image
+%% test CP_ALS with real image
 clc
-disp('%%%%%%%%test cp_als %%%%%%%%');
+disp('%%%%%%%%test CP_ALS %%%%%%%%');
 
 X=double(imread('sherlock.jpg'));
 X=tensor(X);
 % rank : 10
 R=10;
-T=cp_als(X,R);
-X1 = cp2tensor(T);
+T=CP_ALS(X,R);
+X1 = CP2tensor(T);
 Err1 = norm(calculate('minus', X1, X));
 nx=norm(X);
 
@@ -135,15 +135,15 @@ fprintf("CP approximation with rank %d achieve approximation error %d, relative 
 
 % rank : 50
 R=50;
-T=cp_als(X,R);
-X2 = cp2tensor(T);
+T=CP_ALS(X,R);
+X2 = CP2tensor(T);
 Err2 = norm(calculate('minus', X2, X));
 nx=norm(X);
 
 fprintf("CP approximation with rank %d achieve approximation error %d, relative error %d.\n",R,Err2,Err2/nx);
 
 
-% disply results with cp_als
+% disply results with CP_ALS
 figure;
 set(gcf,'unit','centimeters','position',[10 10 30 10]);
 
