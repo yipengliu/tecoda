@@ -1,4 +1,4 @@
-function T = trans(T)
+function T = trans(A)
 %Transpose transpose 3D tensor.
 %
 %   At = transpose(A) transpose 3D tensor A in size of I1*I2*I3 by
@@ -6,9 +6,15 @@ function T = trans(T)
 %   frontal slices from 2 tp I3. Note the transpose only changes the
 %   position and is not conjugate transpose for complex number.
 %
-    if ndims(T) ~= 3
-        error('Order of tensor must be 3!');
+    if ndims(A)==3
+        T=permute(A,[2,1,3]);
+        T.data(:,:,2:T.size(3))=T.data(:,:,T.size(3):-1:2);
+        return;
     end
-    T=permute(T,[2,1,3]);
-    T.data(:,:,2:T.size(3))=T.data(:,:,T.size(3):-1:2);
+    if ndims(A)==2
+        T = permute(A,[2,1]);
+        T.data = A.data';
+        return;
+    end
+    error('Order of tensor must be 2 or 3!');
 end
