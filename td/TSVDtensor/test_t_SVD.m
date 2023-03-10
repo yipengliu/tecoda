@@ -9,9 +9,9 @@ Xhat=t_product(U,S);
 Xhat=t_product(Xhat,trans(V));
 nx=norm(X);
 Err=norm(calculate('minus', X, Xhat));
-fprintf("precise t-SVD approximation achieves approximation error %d, relative error %d.\n",Err,Err/nx);
+fprintf("Precise t-SVD approximation achieves approximation error %d, relative error %d.\n",Err,Err/nx);
 
-%% test t_SVD,precise
+%% test t_SVD,fast
 X=double(imread('sherlock.jpg'));
 X=tensor(X);% X can also be 3D array
 tic
@@ -21,7 +21,7 @@ Xhat=t_product(U,S);
 Xhat=t_product(Xhat,trans(V));
 nx=norm(X);
 Err=norm(calculate('minus', X, Xhat));
-fprintf("fast t-SVD approximation achieves approximation error %d, relative error %d.\n",Err,Err/nx);
+fprintf("Fast t-SVD approximation achieves approximation error %d, relative error %d.\n",Err,Err/nx);
 
 %% tset TSVDtensor
 X=double(imread('sherlock.jpg'));
@@ -30,5 +30,5 @@ TSVD = TSVDtensor(X);
 Xhat = TSVD2tensor(TSVD);
 nx=norm(X);
 Err=norm(calculate('minus', X, Xhat));
-fprintf("precise t-SVD approximation achieves approximation error %d, relative error %d.\n",Err,Err/nx);
+fprintf("Precise t-SVD approximation achieves approximation error %d, relative error %d.\n",Err,Err/nx);
 
