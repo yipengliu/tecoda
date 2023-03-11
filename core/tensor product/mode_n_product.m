@@ -13,8 +13,10 @@ function Out = mode_n_product(T1, T2, varargin)
         
     if isa(T1,'tensor')
         Out = T1.data;
+        tflag = 1;
     else
         Out = T1;
+        tflag = 0;
     end
     
     if nargin >= 3 && ischar(varargin{end}) && varargin{end} == 'T'
@@ -45,13 +47,10 @@ function Out = mode_n_product(T1, T2, varargin)
         end
     end
     
-    Out = mode_product(Out, T2, idx);
-    if isa(T1,'tensor') && ~ismatrix(Out)
-        Out = tensor(Out);
-    end
+    Out = mode_product(Out, T2, idx, tflag);
 end
 
-function Out = mode_product(Out, T2, idx)
+function Out = mode_product(Out, T2, idx, tflag)
     for i = 1 : length(idx)
         if length(T2) == length(idx)
             Idx = i;
@@ -66,6 +65,9 @@ function Out = mode_product(Out, T2, idx)
         tempXX = reshape(permute(Out, perm), ([prod(L1(index1)),prod(L1(idx(i)))]));
         temp = tempXX *T2{Idx};
         Out = ipermute(reshape(temp,([L1(index1),L2(2)])), perm);
+    end
+    if tflag == 1
+        Out = reshape(tensor(Out), ([L1(index1),L2(2)]));
     end
 end
 
