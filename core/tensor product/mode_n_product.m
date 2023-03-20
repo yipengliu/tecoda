@@ -64,10 +64,11 @@ function Out = mode_product(Out, T2, idx, tflag)
         perm = [index1,idx(i)];
         tempXX = reshape(permute(Out, perm), ([prod(L1(index1)),prod(L1(idx(i)))]));
         temp = tempXX *T2{Idx};
-        Out = ipermute(reshape(temp,([L1(index1),L2(2)])), perm);
-    end
-    if tflag == 1
-        Out = reshape(tensor(Out), ([L1(index1),L2(2)]));
+        if i == length(idx) && tflag == 1
+            Out = ipermute(reshape(tensor(temp),([L1(index1),L2(2)])), perm);
+        else
+            Out = ipermute(reshape(temp,([L1(index1),L2(2)])), perm);
+        end
     end
 end
 
