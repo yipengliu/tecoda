@@ -29,7 +29,13 @@ C=mode_n_product(A,a{1},1);
 C=mode_n_product(A,a);
 C=mode_n_product(A,a,-2);
 C=mode_n_product(A,a(1:2),[1,2]);
-
+A=tensor(rand(6,4,1));
+A = reshape(A, [6,4,1]);
+a=cell(3,1);
+a{1} = rand(49,6);
+a{2} = rand(31,4);
+a{3} = rand(22,1);
+C=mode_n_product(A,a,'T');
 %% t-product
     %   T1 -- Tensor1 in Size(l, p, n)
     %   T2 -- Tensor2 in Size(p, m, n)
