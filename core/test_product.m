@@ -39,6 +39,7 @@ C=mode_n_product(A,a,'T');
 %% t-product
     %   T1 -- Tensor1 in Size(l, p, n)
     %   T2 -- Tensor2 in Size(p, m, n)
+A = tensor(rand([3,4,5]));
 B=rand([4,2,5]);
 B=tensor(B);
 C=t_product(A,B);

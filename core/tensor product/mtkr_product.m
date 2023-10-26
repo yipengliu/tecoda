@@ -17,7 +17,7 @@ function Out = mtkr_product(X, T, n, varargin)
        T = {T}; 
     end
     
-    if nargin >= 3 && ischar(varargin{end}) && varargin{end} == 'T'
+    if nargin > 3 && ischar(varargin{end}) && varargin{end} == 'T'
         for i = 1 : length(T)
         	T{i} = T{i}';
         end
