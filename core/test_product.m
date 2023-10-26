@@ -68,3 +68,24 @@ B=rand(2,4);
 C=khatrirao_product(A,B);
 D=khatrirao_product(A,B,C);
 E=khatrirao_product(A,B,C,'r');
+
+
+%% mtkr_product
+clear
+dim=[3,4,5,6];
+M=length(dim);
+a=cell(M,1);
+for m=1:M
+    a{m}=rand(dim(m),2);
+end
+A = rand(3,4,5,10);
+B = mtkr_product(A, a, 4);
+
+dim=[3,4,5,6];
+M=length(dim);
+a=cell(M,1);
+for m=1:M
+    a{m}=rand(3, dim(m));
+end
+A = rand(3,4,5,10);
+B = mtkr_product(A, a, 4, 'T');
