@@ -24,6 +24,7 @@ function Out = mtkr_product(X, T, n, varargin)
     end
     
     N = ndims(X);
+    sizeX = size(X);
     if N < 2
         error('X is not a valid tensor structure.');
     end
@@ -44,14 +45,33 @@ function Out = mtkr_product(X, T, n, varargin)
     end
     for i = 1 : N
        if i == n, continue; end
-       if size(X, i) ~= size(T{i}, 1) || size(T{i}, 2) ~= R
+       if sizeX(i) ~= size(T{i}, 1) || size(T{i}, 2) ~= R
           error('Incorrect input format.') 
        end
     end
     
-    Out = mode_n_unfold(X, n);
-    U = khatrirao_product({T{1:n-1}, T{n+1:end}});
-    Out = Out * U;
+    szl = prod(sizeX(1:n-1));
+    szr = prod(sizeX(n+1:N));
+    szn = sizeX(n);
+    if n == 1
+        T = khatrirao_product(T{2:N},'r');
+        X = reshape(X,szn,szr);
+        Out =  X * T;
+    elseif n == N
+        T = khatrirao_product(T{1:N-1},'r');
+        X = reshape(X,szl,szn);
+        Out =  X' * T;
+    else
+        T1 = khatrirao_product(T{n+1:N},'r');
+        T2 = khatrirao_product(T{1:n-1},'r');
+        T2 = reshape(T2, szl, 1, R);
+        X = reshape(reshape(X, [], szr) * T1, szl, szn, R);
+        Out = zeros(szn,R);
+        for i =1:R
+            Out(:,i) = X(:,:,i)' * T2(:,:,i);
+        end
+    end
+    
     
     
     
