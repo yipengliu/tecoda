@@ -79,8 +79,18 @@ a=cell(M,1);
 for m=1:M
     a{m}=rand(dim(m),2);
 end
-A = rand(3,4,5,10);
-B = mtkr_product(A, a, 4);
+A = rand(10,4,5,6);
+B = mtkr_product(A, a, 1);
+
+clear
+dim=[3,4,5,6];
+M=length(dim);
+a=cell(M,1);
+for m=1:M
+    a{m}=rand(dim(m),2);
+end
+A = rand(3,10,5,6);
+B = mtkr_product(A, a, 2);
 
 dim=[3,4,5,6];
 M=length(dim);
