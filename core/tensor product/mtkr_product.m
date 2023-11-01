@@ -12,7 +12,9 @@ function Out = mtkr_product(X, T, n, varargin)
     if nargin == 0
         error('error data input')
     end
-    
+    if isa(X,'tensor')
+        X = X.data;
+    end
     if ~iscell(T)
        T = {T}; 
     end
