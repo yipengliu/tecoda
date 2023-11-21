@@ -4,14 +4,20 @@ function Out=t_product(varargin)
     %   T2 -- Tensor2 in Size(p, m, n)
     % Output:
     %   X - the contraction result
-    if nargin == 0 || ~isa(varargin{1},'tensor')
+    if nargin == 0
         error('Input tensor must be tensor class data')
     elseif nargin > 2
         error('error data number') 
     end
     T = {};
+    tflag = 0;
     for i = 1 : nargin
-        T = [T varargin{i}.data];
+        if isa(varargin{i},'tensor')
+            T = [T varargin{i}.data];
+            tflag = 1;
+        else
+            T = [T varargin{i}];
+        end
     end
     if numel(T) ~= 2
         if numel(T) == 1
@@ -41,7 +47,7 @@ function Out=t_product(varargin)
         temp = (T1_bcirc * T2_Unfold)';
         Out = ipermute(reshape(temp, Outdim([2,1,3])), [2,1,3]);
     end
-    if ~ismatrix(Out)
+    if ~ismatrix(Out) && tflag == 1
         Out = tensor(Out);
     end
 end

@@ -44,6 +44,9 @@ B=rand([4,2,5]);
 B=tensor(B);
 C=t_product(A,B);
 
+A = rand([3,4,5]);
+B=rand([4,2,5]);
+C=t_product(A,B);
 %% tensor contraction
 B=rand([5,2,5]);
 B=tensor(B);
