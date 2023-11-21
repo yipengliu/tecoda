@@ -33,10 +33,13 @@ Xhat = min(Xhat,maxP);
 figure(1)
 subplot(1,3,1)
 imshow(X/max(X(:)))
+title('Original');
 subplot(1,3,2)
 imshow(Xn/max(Xn(:)))
+title('Observed');
 subplot(1,3,3)
 imshow(Xhat/max(Xhat(:)))
+title('Denoised');
 
 
 
