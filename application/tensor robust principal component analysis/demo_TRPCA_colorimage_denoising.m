@@ -1,7 +1,11 @@
-addpath(genpath(cd))
 clear
+addpath(genpath('..\..\..\core\'));
+addpath(genpath('..\..\..\td\'));
+addpath(genpath('..\..\..\optimization\'));
+addpath(genpath('..\..\..\database\'));
+addpath(genpath(cd))
 
-pic_name = './database/color image/lena.bmp';
+pic_name = 'color_image\lena.bmp';
 X = double(imread(pic_name));
 
 X = X/255;
