@@ -106,9 +106,9 @@ R=10;
 T=CP_ALS(X,R);
 X_hat=CP2tensor(T);
 
-Err=norm(calculate('minus',X,CP2tensor(T)))/norm(X);%% needs further define
+Err=norm(calculate('minus',X,CP2tensor(T)))/sqrt(prod(X.size));%% needs further define
 
-fprintf("CP approximation with rank %d achieve approximation erro %d.\n",R,Err)
+fprintf("CP approximation with rank %d achieve RMSE %d.\n",R,Err)
 
 
 if Qpause
@@ -127,20 +127,18 @@ X=tensor(X);
 R=10;
 T=CP_ALS(X,R);
 X1 = CP2tensor(T);
-Err1 = norm(calculate('minus', X1, X));
-nx=norm(X);
+Err1 = norm(calculate('minus', X1, X))/sqrt(prod(X.size));
 
-fprintf("CP approximation with rank %d achieve approximation error %d, relative error %d.\n",R,Err1,Err1/nx);
+fprintf("CP approximation with rank %d achieve RMSE %d, relative error %d.\n",R,Err1);
 
 
 % rank : 50
 R=50;
 T=CP_ALS(X,R);
 X2 = CP2tensor(T);
-Err2 = norm(calculate('minus', X2, X));
-nx=norm(X);
+Err2 = norm(calculate('minus', X2, X))/sqrt(prod(X.size));
 
-fprintf("CP approximation with rank %d achieve approximation error %d, relative error %d.\n",R,Err2,Err2/nx);
+fprintf("CP approximation with rank %d achieve RMSE %d.\n",R,Err2);
 
 
 % disply results with CP_ALS
@@ -149,15 +147,15 @@ set(gcf,'unit','centimeters','position',[10 10 30 10]);
 
 subplot(1,3,1);
 imshow(imread('sherlock.jpg'));
-title('Origin image','fontsize',12);
+title('Original','fontsize',12);
 
 subplot(1,3,2);
 imshow(uint8(double(X1)));
-title({['rank=10'];['AE=', num2str(Err1)]},'fontsize',12);
+title({['rank=10'];['RMSE=', num2str(roundn(Err1,-3))]},'fontsize',12);
 
 subplot(1,3,3);
 imshow(uint8(double(X2)));
-title({['rank=50'];['AE=', num2str(Err2)]},'fontsize',12);
+title({['rank=50'];['RMSE=', num2str(roundn(Err2,-3))]},'fontsize',12);
 
 
 if Qpause
