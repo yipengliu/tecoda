@@ -22,10 +22,10 @@ disp('Sove linear regression model with regularized least squares method')
 para.pentype='ell_1';
 para.lambda=0.005;
 B=rlr(X,Y,para);
-AE=norm(Y-X*B)^2;
+rmse_1=root_mse(Y,X*B);
 disp('B=');
 disp(B);
-disp(['Approxiamte error=',num2str(AE)]);
+disp(['RMSE=',num2str(rmse_1)]);
 
 
 disp('%%%%%%%%%%%%Exp 2%%%%%%%%%%%%%%%%%');
@@ -34,75 +34,75 @@ disp('%%%%%%%%%Linear regression with shape image as weight matrix%%%%%%%%%%%%')
 
 disp('Generate simulated data with shape image as weight matrix')
 
-B=double(imread('circlesBrightDark.png'));
-B=B(1:16:end,1:16:end);
-B(50<B&B<200)=0;
+B=double(imread('butterfly.bmp'));
+% B=B(1:16:end,1:16:end);
+% B(50<B&B<200)=0;
 B0=B;
 N=1000;
-X=rand(N,32);
-Y=X*B+0.1.*rand(N,32);
+X=rand(N,size(B,1));
+Y=X*B+0.1.*rand(N,size(B,1));
 
 disp('Sove linear regression model with RLR- L1-norm')
 para.pentype='ell_1';
 para.lambda=0.0001;
 B_1=rlr(X,Y,para);
-AE_1=norm(Y-X*B_1)^2;
+rmse_1=root_mse(Y,X*B_1);
 disp('B_1=');
 disp(B_1);
-disp(['Approxiamte error=',num2str(AE_1)]);
+disp(['RMSE=',num2str(rmse_1)]);
 
 
 disp('Sove linear regression model with RLR- L21-norm')
 para.pentype='ell_21';
 para.lambda=0.0001;
 B_21=rlr(X,Y,para);
-AE_21=norm(Y-X*B_21)^2;
+rmse_21=root_mse(Y,X*B_21);
 disp('B_21=');
 disp(B_21);
-disp(['Approxiamte error=',num2str(AE_21)]);
+disp(['RMSE=',num2str(rmse_21)]);
 
 disp('Sove linear regression model with RLR- nuclear-norm')
 para.pentype='nuclear_norm';
 para.lambda=0.0001;
 B_nu=rlr(X,Y,para);
-AE_nu=norm(Y-X*B_nu)^2;
+rmse_nu=root_mse(Y,X*B_nu);
 disp('B_nu=');
 disp(B_nu);
-disp(['Approxiamte error=',num2str(AE_nu)]);
+disp(['RMSE=',num2str(rmse_nu)]);
 
 disp('Sove linear regression model with RLR- tv-constraint')
 para.pentype='ell_tv';
 para.lambda=0.0001;
 B_tv=rlr(X,Y,para);
-AE_tv=norm(Y-X*B_tv)^2;
+rmse_tv=root_mse(Y,X*B_tv);
 disp('B_tv=');
 disp(B_tv);
-disp(['Approxiamte error=',num2str(AE_tv)]);
+disp(['RMSE=',num2str(rmse_tv)]);
 
 % disply results with different torlence
 figure;
-set(gcf,'unit','centimeters','position',[10 10 40 10]);
+set(gcf,'unit','centimeters','position',[10 10 15 10]);
 
-        subplot(1,5,1);
-imshow(uint8(B0));
-title('Origin image','fontsize',12);
+        subplot(2,3,1);
+imshow((B0));
+title('Original','fontsize',12);
     
-    subplot(1,5,2);
-imshow(uint8(B_1));
-title({'Recovered image by RLR-L1' ;['AE=', num2str(AE_1)]},'fontsize',12);
+    subplot(2,3,2);
+imshow((B_1));
+title({' RLR-L1' ;['RMSE=', num2str(roundn(rmse_1,-3))]},'fontsize',12);
 
-    subplot(1,5,3);
-imshow(uint8(B_21));
-title({'Recovered image by RLR-L21' ;['AE=', num2str(AE_21)]},'fontsize',12);
+    subplot(2,3,3);
+imshow((B_21));
+title({'RLR-L21' ;['RMSE=', num2str(roundn(rmse_21,-3))]},'fontsize',12);
 
-    subplot(1,5,4);
-imshow(uint8(B_nu));
-title({'Recovered image by RLR-nuclear-norm' ;['AE=', num2str(AE_nu)]},'fontsize',12);
+    subplot(2,3,5);
+imshow((B_nu));
+title({'RLR-nuclear-norm' ;['RMSE=', num2str(roundn(rmse_nu,-3))]},'fontsize',12);
 
 
- subplot(1,5,5);
-imshow(uint8(B_tv));
-title({'Recovered image by RLR-tv' ;['AE=', num2str(AE_tv)]},'fontsize',12);
+ subplot(2,3,6);
+imshow((B_tv));
+title({'RLR-tv' ;['RMSE=', num2str(roundn(rmse_tv,-3))]},'fontsize',12);
 
 
 
