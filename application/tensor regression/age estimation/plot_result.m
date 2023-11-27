@@ -2,9 +2,10 @@
 %% age estimation for Fg-net dataset
 
 clear all
- 
+addpath(genpath('..\..\..\database\'));
+
 %% Load Database
-load('data\age.mat');
+load('age_estimation\age.mat');
  
 %% obtain the ground truth of the test data
 N=size(age,1);
