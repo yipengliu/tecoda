@@ -6,13 +6,13 @@ classdef TRtensor
     end
     methods
         function TR = TRtensor(varargin)
-        %TRtensor is tensor ring format tensor(decomposed).
-        % TR = TRtensor() creates a empty TRtensor.
-        % TR = TRtensor(TR) copy a TRtensor.
-        % TR = TRtensor(F1,F2,...,Fn) use core factors fn to
-        % create a TRtensor.
-        % TR = TRtensor({F1,F2,...,Fn})use a cell to
-        % create a TRtensor,the cell contains all factors.
+            %TRtensor is tensor ring format tensor(decomposed).
+            % TR = TRtensor() creates a empty TRtensor.
+            % TR = TRtensor(TR) copy a TRtensor.
+            % TR = TRtensor(F1,F2,...,Fn) use core factors fn to
+            % create a TRtensor.
+            % TR = TRtensor({F1,F2,...,Fn})use a cell to
+            % create a TRtensor,the cell contains all factors.
             if (nargin==0)
                 TR.factors = {};
                 TR.size = [];
@@ -38,7 +38,19 @@ classdef TRtensor
             %check that factors are indeed matrices
             for i = 1:length(TR.factors)
                 if ndims(TR.factors{i}) ~=3
-                    error('All factors must be 3-order tensor.');
+                    if ismatrix(TR.factors{i})
+                        if i==length(TR.factors)
+                            if  size(TR.factors{1}, 1)~=1
+                                error('Rank inconsistency.');
+                            end
+                        else
+                            if size(TR.factors{i+1}, 1)~=1
+                                error('Rank inconsistency.');
+                            end
+                        end
+                    else
+                        error('All factors must be 3-order tensor.');
+                    end
                 end
             end
             
