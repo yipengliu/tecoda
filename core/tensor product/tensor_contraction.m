@@ -24,7 +24,7 @@ function Out = tensor_contraction(T1, T2, m, n)
     index1(m) = [];
     index2(n) = [];
     tempXX = reshape(permute(t1, [index1,m]), [prod(L1(index1)),prod(L1(m))]);
-    tempYY = reshape(permute(T2, [n,index2]), [prod(L2(n)),prod(L2(index2))]);
+    tempYY = reshape(permute(t2, [n,index2]), [prod(L2(n)),prod(L2(index2))]);
     temp = tempXX * tempYY;
 
     Out = reshape(tensor(temp), [L1(index1),L2(index2)]);
