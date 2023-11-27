@@ -73,19 +73,19 @@ disp('%%%%%%%%test TR_SVD and TR_ALS%%%%%%%%');
 
 
 X=tensor(rand([30,40,50]));
-options.Rmax = 4;
+options.tol = 0.1;
+options.intial='svd';% svd or rand
 options.MaxIter = 50;
-[T1,R]=TR_SVD(X,options);
+T1=TR_SVD(X,options.tol);
 T2=TR_ALS(X,options);
 X1 = TR2tensor(T1);
 X2 = TR2tensor(T2);
-Err1 = norm(calculate('minus', X1, X));
-Err2 = norm(calculate('minus', X2, X));
+Err1 = norm(calculate('minus', X1, X))/sqrt(prod(X.size));
+Err2 = norm(calculate('minus', X2, X))/sqrt(prod(X.size));
+R=T1.rank;
 
-nx=norm(X);
-
-fprintf("TR_SVD with rank [%d,%d,%d] achieve approximation error %d, relative error %d.\n",R(1),R(2),R(3),Err1,Err1/nx);
-fprintf("TR_ALS with rank [%d,%d,%d] achieve approximation error %d, relative error %d.\n",R(1),R(2),R(3),Err2,Err2/nx);
+fprintf("TR_SVD with rank [%d,%d,%d] achieve RMSE %d.\n",R(1),R(2),R(3),Err1);
+fprintf("TR_ALS with rank [%d,%d,%d] achieve RMSE %d.\n",R(1),R(2),R(3),Err2);
 
 
 
@@ -98,37 +98,40 @@ end
 
 %% %% test TR_SVD and TR_ALS with real image
 clc
-disp('%%%%%%%%test TR_SVD and TR_ALS%%%%%%%%');
+disp('%%%%%%%%test TR_SVD and TR_ALS with real image%%%%%%%%');
 
 X=double(imread('sherlock.jpg'));
 X=tensor(X);
-options.Rmax = 5;
-options.MaxIter = 100;
-
-[T1,R1]=TR_SVD(X,options);
+options.tol = 0.1;
+options.intial='svd';% svd or rand
+options.MaxIter = 50;
+T1=TR_SVD(X,options.tol);
 T2=TR_ALS(X,options);
 X1 = TR2tensor(T1);
 X2 = TR2tensor(T2);
-Err1 = norm(calculate('minus', X1, X));
-Err2 = norm(calculate('minus', X2, X));
-nx=norm(X);
+Err1 = norm(calculate('minus', X1, X))/sqrt(prod(X.size));
+Err2 = norm(calculate('minus', X2, X))/sqrt(prod(X.size));
+R1=T1.rank;
 
-fprintf("TR_SVD with rank [%d,%d,%d] achieve approximation error %d, relative error %d.\n",R1(1),R1(2),R1(3),Err1,Err1/nx);
-fprintf("TR_ALS with rank [%d,%d,%d] achieve approximation error %d, relative error %d.\n",R1(1),R1(2),R1(3),Err2,Err2/nx);
+fprintf("TR_SVD with rank [%d,%d,%d] achieve RMSE %d.\n",R1(1),R1(2),R1(3),Err1);
+fprintf("TR_ALS with rank [%d,%d,%d] achieve RMSE %d.\n",R1(1),R1(2),R1(3),Err2);
+
 
 % rank : 50,50,3
-options.Rmax = 50;
-options.MaxIter = 100;
-[T3,R2]=TR_SVD(X,options);
+options.tol = 0.01;
+options.intial='svd';% svd or rand
+options.MaxIter = 50;
+T3=TR_SVD(X,options.tol);
 T4=TR_ALS(X,options);
 X3 = TR2tensor(T3);
 X4 = TR2tensor(T4);
-Err3 = norm(calculate('minus', X3, X));
-Err4 = norm(calculate('minus', X4, X));
-nx=norm(X);
+Err3 = norm(calculate('minus', X3, X))/sqrt(prod(X.size));
+Err4 = norm(calculate('minus', X4, X))/sqrt(prod(X.size));
+R2=T3.rank;
 
-fprintf("TR_SVD with rank [%d,%d,%d] achieve approximation error %d, relative error %d.\n",R2(1),R2(2),R2(3),Err3,Err3/nx);
-fprintf("TR_ALS with rank [%d,%d,%d] achieve approximation error %d, relative error %d.\n",R2(1),R2(2),R2(3),Err4,Err4/nx);
+fprintf("TR_SVD with rank [%d,%d,%d] achieve RMSE %d.\n",R2(1),R2(2),R2(3),Err3);
+fprintf("TR_ALS with rank [%d,%d,%d] achieve RMSE %d.\n",R2(1),R2(2),R2(3),Err4);
+
 
 % disply results with TR_SVD and TR_ALS
 figure;
@@ -136,25 +139,105 @@ set(gcf,'unit','centimeters','position',[10 10 30 10]);
 
 subplot(2,3,1);
 imshow(imread('sherlock.jpg'));
-title('Origin image','fontsize',12);
+title('Original','fontsize',12);
 
 subplot(2,3,2);
 imshow(uint8(double(X1)));
-title({'Recovered image by TR_SVD' ;['rank=',R1];['AE=', num2str(Err1)]},'fontsize',12);
+title({'TR\_SVD' ;"rank=["+strjoin(string(R1))+"]";['RMSE=', num2str(roundn(Err1,-2))]},'fontsize',12);
 
 subplot(2,3,3);
 imshow(uint8(double(X2)));
-title({'Recovered image by TR_ALS' ;['rank=',R1];['AE=', num2str(Err2)]},'fontsize',12);
+title({'TR\_ALS' ;"rank=["+strjoin(string(R1))+"]";['RMSE=', num2str(roundn(Err2,-2))]},'fontsize',12);
 
 
 subplot(2,3,5);
 imshow(uint8(double(X3)));
-title({'Recovered image by TR_SVD' ;['rank=',R2];['AE=', num2str(Err3)]},'fontsize',12);
+title({'TR\_SVD' ;"rank=["+strjoin(string(R2))+"]";['RMSE=', num2str(roundn(Err3,-2))]},'fontsize',12);
 
 subplot(2,3,6);
 imshow(uint8(double(X4)));
-title({'Recovered image by TR_ALS' ;['rank=',R2];['AE=', num2str(Err4)]},'fontsize',12);
+title({'TR\_ALS' ;"rank=["+strjoin(string(R2))+"]";['RMSE=', num2str(roundn(Err4,-2))]},'fontsize',12);
 
+
+if Qpause
+    fprintf("Enter any key to continue,press ctrl+c to exit\n")
+    pause
+end
+
+%% test with video
+
+clc
+disp('%%%%%%%%test TR_SVD and TR_ALS with video%%%%%%%%');
+
+vidObj = VideoReader("xylophone_video.mp4");
+frames = double(read(vidObj,[18 67]));
+
+
+X=tensor(frames);
+options.tol = 0.1;
+options.intial='svd';% svd or rand
+options.MaxIter = 50;
+T1=TR_SVD(X,options.tol);
+T2=TR_ALS(X,options);
+X1 = TR2tensor(T1);
+X2 = TR2tensor(T2);
+Err1 = norm(calculate('minus', X1, X))/sqrt(prod(X.size));
+Err2 = norm(calculate('minus', X2, X))/sqrt(prod(X.size));
+R1=T1.rank;
+
+fprintf("TR_SVD with rank [%d,%d,%d] achieve RMSE %d.\n",R1(1),R1(2),R1(3),Err1);
+fprintf("TR_ALS with rank [%d,%d,%d] achieve RMSE %d.\n",R1(1),R1(2),R1(3),Err2);
+
+
+% rank : 50,50,3
+options.tol = 0.05;
+options.intial='svd';% svd or rand
+options.MaxIter = 50;
+T3=TR_SVD(X,options.tol);
+T4=TR_ALS(X,options);
+X3 = TR2tensor(T3);
+X4 = TR2tensor(T4);
+Err3 = norm(calculate('minus', X3, X))/sqrt(prod(X.size));
+Err4 = norm(calculate('minus', X4, X))/sqrt(prod(X.size));
+R2=T3.rank;
+
+fprintf("TR_SVD with rank [%d,%d,%d] achieve RMSE %d.\n",R2(1),R2(2),R2(3),Err3);
+fprintf("TR_ALS with rank [%d,%d,%d] achieve RMSE %d.\n",R2(1),R2(2),R2(3),Err4);
+
+
+% disply results with TR_SVD and TR_ALS
+figure;
+set(gcf,'unit','centimeters','position',[10 10 30 10]);
+X=double(X);
+X1=double(X1);
+X2=double(X2);
+X3=double(X3);
+X4=double(X4);
+
+for f=1:size(X,4)
+    subplot(2,3,1);
+    imshow(uint8(X(:,:,:,f)));
+    title('Original','fontsize',12);
+    
+    subplot(2,3,2);
+    imshow(uint8(double(X1(:,:,:,f))));
+    title({'TR\_SVD' ;"rank=["+strjoin(string(R1))+"]";['RMSE=', num2str(roundn(Err1,-3))]},'fontsize',12);
+    
+    subplot(2,3,3);
+    imshow(uint8(double(X2(:,:,:,f))));
+    title({'TR\_ALS' ;"rank=["+strjoin(string(R1))+"]";['RMSE=', num2str(roundn(Err2,-3))]},'fontsize',12);
+    
+    
+    subplot(2,3,5);
+    imshow(uint8(double(X3(:,:,:,f))));
+    title({'TR\_SVD' ;"rank=["+strjoin(string(R2))+"]";['RMSE=', num2str(roundn(Err3,-3))]},'fontsize',12);
+    
+    subplot(2,3,6);
+    imshow(uint8(double(X4(:,:,:,f))));
+    title({'TR\_ALS' ;"rank=["+strjoin(string(R2))+"]";['RMSE=', num2str(roundn(Err4,-3))]},'fontsize',12);
+    
+    drawnow
+end
 
 if Qpause
     fprintf("Enter any key to continue,press ctrl+c to exit\n")
