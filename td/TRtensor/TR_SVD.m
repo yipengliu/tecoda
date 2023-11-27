@@ -1,34 +1,58 @@
-function [G,R] = TR_SVD(X,options)
-%   Input:  X:      Tensor in Size(I1, I2, ..., IN)
-%   options:
-%           Rmax:   TR-rank threshold
-%   Output: G:      G(n) in Size(Rn, In, Rn+1)
 
-    if nargin == 1, options = struct; end
-    if ~isfield(options, 'Rmax'), options.Rmax = 10; end
-    
-    G = {}; 
-    M = {};
-    R = [];
-    N = ndims(X);
-    I = size(X);
+function G=TR_SVD(T,rho)
+% appriximate origin data within certain error rho.
+%
+%--input:
+%       T: origin tensor
+%       rho: desired approximation errors
+%--output:
+%       A: tensor ring decomposition of origin tensor T
+%       r: tensor ring ranks
+%---------------------------
 
-    M{1} = mode_n_unfold(X, 1);
-    [U,S,V] = svd(M{1}, 'econ');
-    R(1) = 1; R(2) = min(length(S), options.Rmax);
-    G{1}(1:R(1),:,1:R(2)) = U(:, 1:R(2)); 
-    M{2} = S(1:R(2),1:R(2))*V(:,1:R(2))';
-    
-    for i = 1 : N - 1
-        [U,S,V] = svd(reshape(M{i}, R(i)*I(i), []), 'econ');
-        R(i+1) = min(length(S), options.Rmax);
-        G{i} = reshape(U(:,1:R(i+1)), R(i), I(i), R(i+1));
-        M{i} = S(1:R(i+1),1:R(i+1))*V(:,1:R(i+1))';
+if isa(T,'tensor')
+    dim=T.size;
+    tnorm=norm(T);
+else
+    dim=size(T);
+    tnorm=norm(reshape(T,1,[]),'fro');
+end
+d=length(dim);
+
+%compute truncation threshold sigma(k) for k>1.
+sigma=zeros(1,d);
+for k=1:d
+    if k == 1
+        sigma(1,k)=(sqrt(2)*rho*tnorm)/sqrt(d);
+    else
+        sigma(1,k)=(rho*tnorm)/sqrt(d);
     end
-    G{N}(1:R(N),:,1:R(1)) = M{N-1};
-    for i = 1 : length(G)
-       G{i} = tensor(G{i}); 
-    end
-    G{N} = reshape(G{N}, [size(G{N}), 1]);   
-    G = TRtensor(G);
+end
+
+%initialization
+T1=mode_n_unfold(T,1);
+[U,S,V]=SVT(T1, sigma(1,1) );
+%obtain r1,r2
+rnew = length(diag(S));
+
+factors = divisors(rnew);
+r(1)= factors(floor((length(factors) + 1) / 2));
+r(2)=rnew/r(1);
+A =cell(1,d);
+B=cell(1,d);
+A{1}=permute(reshape(U,[dim(1),r(1),r(2)]),[2,1,3]);
+B{1}=permute(reshape(S*V',[r(1),r(2),prod(dim(2:d))]),[2,3,1]);
+
+%loop
+
+for k=2:d-1
+    B{k-1}=reshape(B{k-1},[r(k)*dim(k),prod(dim(k+1:d))*r(1)]);
+    [U,S,V]=SVT(B{k-1}, sigma(1,k) );
+    r(k+1)=length(diag(S));
+    A{k}=reshape(U,[r(k),dim(k),r(k+1)]);
+    B{k}=reshape(S*V',[r(k+1),prod(dim(k+1:d)),r(1)]);
+end
+A{d}=B{k};
+G = TRtensor(A);
+
 end
