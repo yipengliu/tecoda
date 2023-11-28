@@ -6,29 +6,35 @@ function G = TR_ALS(X,options)
 %           MaxIter:Max Iteration
 %   Output: G:      G(n) in Size(Rn, In, Rn+1)
 
+
+
 if nargin == 1, options = struct; end
 if ~isfield(options, 'Err'), options.Err = 1e-3; end
 if ~isfield(options, 'MaxIter'), options.MaxIter = 50; end
-if ~isfield(options, 'tol'), options.tol = 1e-3; end
+if ~isfield(options, 'maxR'), options.maxR = 10; end
 if ~isfield(options, 'initialization'), options.initialization = 'svd'; end
 
 N = ndims(X);
 I = size(X);
 switch options.initialization
     case 'svd'
-        G = TR_SVD(X, options.tol);
-        
+        G = SSVD(X, options.maxR);
+        G.factors{1}(2:options.maxR,:,:)=randn(options.maxR-1,I(1),size(G.factors{1},3));
+        G.factors{N}(:,:,2:options.maxR)=randn(size(G.factors{N},1),I(N),options.maxR-1);
+        G.rank(1)=options.maxR;
     case 'rand'
+        if ~isfield(options, 'R'), options.R = repmat(maxR,d,1); end
         G=cell(1,d);
         for k=1:N
             if k==N
-                G{k}=randn(r(k),dim(k),r(1));
+                G{k}=randn(options.R(k),I(k),options.R(1));
             else
-                G{k}=randn(r(k),dim(k),r(k+1));
+                G{k}=randn(options.R(k),I(k),options.R(k+1));
             end
         end
         G=TRtensor(G);
 end
+
 R=G.rank;
 R = horzcat(R, R(1));
 B = cell(N,1);
@@ -69,5 +75,5 @@ for iter = 1 : options.MaxIter
     
     if error < options.Err, break; end
 end
-G = TRtensor(G);
+% G = TRtensor(G);
 end
