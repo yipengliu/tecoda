@@ -74,9 +74,11 @@ disp('%%%%%%%%test TR_SVD and TR_ALS%%%%%%%%');
 
 X=tensor(rand([30,40,50]));
 options.tol = 0.1;
+T1=TR_SVD(X,options.tol);
+
 options.intial='svd';% svd or rand
 options.MaxIter = 50;
-T1=TR_SVD(X,options.tol);
+options.Rmax=5;
 T2=TR_ALS(X,options);
 X1 = TR2tensor(T1);
 X2 = TR2tensor(T2);
@@ -103,9 +105,11 @@ disp('%%%%%%%%test TR_SVD and TR_ALS with real image%%%%%%%%');
 X=double(imread('sherlock.jpg'));
 X=tensor(X);
 options.tol = 0.1;
+T1=TR_SVD(X,options.tol);
+
 options.intial='svd';% svd or rand
 options.MaxIter = 50;
-T1=TR_SVD(X,options.tol);
+options.maxR=5;
 T2=TR_ALS(X,options);
 X1 = TR2tensor(T1);
 X2 = TR2tensor(T2);
@@ -119,9 +123,11 @@ fprintf("TR_ALS with rank [%d,%d,%d] achieve RMSE %d.\n",R1(1),R1(2),R1(3),Err2)
 
 % rank : 50,50,3
 options.tol = 0.01;
+T3=TR_SVD(X,options.tol);
+
 options.intial='svd';% svd or rand
 options.MaxIter = 50;
-T3=TR_SVD(X,options.tol);
+options.Rmax=50;
 T4=TR_ALS(X,options);
 X3 = TR2tensor(T3);
 X4 = TR2tensor(T4);
@@ -170,14 +176,16 @@ clc
 disp('%%%%%%%%test TR_SVD and TR_ALS with video%%%%%%%%');
 
 vidObj = VideoReader("xylophone_video.mp4");
-frames = double(read(vidObj,[18 67]));
+frames = double(read(vidObj,[18 47]));
 
 
 X=tensor(frames);
-options.tol = 0.1;
+options.tol = 0.5;
+T1=TR_SVD(X,options.tol);
+
 options.intial='svd';% svd or rand
 options.MaxIter = 50;
-T1=TR_SVD(X,options.tol);
+options.maxR=1;
 T2=TR_ALS(X,options);
 X1 = TR2tensor(T1);
 X2 = TR2tensor(T2);
@@ -190,10 +198,12 @@ fprintf("TR_ALS with rank [%d,%d,%d] achieve RMSE %d.\n",R1(1),R1(2),R1(3),Err2)
 
 
 % rank : 50,50,3
-options.tol = 0.05;
-options.intial='svd';% svd or rand
-options.MaxIter = 50;
+options.tol = 0.1;
 T3=TR_SVD(X,options.tol);
+
+options.intial='rand';% svd or rand
+options.MaxIter = 50;
+options.Rmax=2;
 T4=TR_ALS(X,options);
 X3 = TR2tensor(T3);
 X4 = TR2tensor(T4);
