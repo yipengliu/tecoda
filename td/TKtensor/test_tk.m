@@ -77,13 +77,12 @@ T1=HOSVD(X,R);
 T2=HOOI(X,R);
 X1 = TK2tensor(T1);
 X2 = TK2tensor(T2);
-Err1 = norm(calculate('minus', X1, X));
-Err2 = norm(calculate('minus', X2, X));
+Err1 = norm(calculate('minus', X1, X))/sqrt(prod(X.size));
+Err2 = norm(calculate('minus', X2, X))/sqrt(prod(X.size));
 
-nx=norm(X);
-
-fprintf("HOSVD with rank [%d,%d,%d] achieve approximation error %d, relative error %d.\n",R(1),R(2),R(3),Err1,Err1/nx);
-fprintf("HOOI with rank [%d,%d,%d] achieve approximation error %d, relative error %d.\n",R(1),R(2),R(3),Err2,Err2/nx);
+ 
+fprintf("HOSVD with rank [%d,%d,%d] achieve approximation error %d, relative error %d.\n",R(1),R(2),R(3),Err1,Err1);
+fprintf("HOOI with rank [%d,%d,%d] achieve approximation error %d, relative error %d.\n",R(1),R(2),R(3),Err2,Err2);
 
 
 
@@ -106,12 +105,11 @@ T1=HOSVD(X,R);
 T2=HOOI(X,R);
 X1 = TK2tensor(T1);
 X2 = TK2tensor(T2);
-Err1 = norm(calculate('minus', X1, X));
-Err2 = norm(calculate('minus', X2, X));
-nx=norm(X);
+Err1 = norm(calculate('minus', X1, X))/sqrt(prod(X.size));
+Err2 = norm(calculate('minus', X2, X))/sqrt(prod(X.size));
 
-fprintf("HOSVD with rank [%d,%d,%d] achieve approximation error %d, relative error %d.\n",R(1),R(2),R(3),Err1,Err1/nx);
-fprintf("HOOI with rank [%d,%d,%d] achieve approximation error %d, relative error %d.\n",R(1),R(2),R(3),Err2,Err2/nx);
+fprintf("HOSVD with rank [%d,%d,%d] achieve approximation error %d, relative error %d.\n",R(1),R(2),R(3),Err1,Err1);
+fprintf("HOOI with rank [%d,%d,%d] achieve approximation error %d, relative error %d.\n",R(1),R(2),R(3),Err2,Err2);
 
 % rank : 50,50,3
 R=[50,50,3];
@@ -119,12 +117,11 @@ T3=HOSVD(X,R);
 T4=HOOI(X,R);
 X3 = TK2tensor(T3);
 X4 = TK2tensor(T4);
-Err3 = norm(calculate('minus', X3, X));
-Err4 = norm(calculate('minus', X4, X));
-nx=norm(X);
-
-fprintf("HOSVD with rank [%d,%d,%d] achieve approximation error %d, relative error %d.\n",R(1),R(2),R(3),Err3,Err3/nx);
-fprintf("HOOI with rank [%d,%d,%d] achieve approximation error %d, relative error %d.\n",R(1),R(2),R(3),Err4,Err4/nx);
+Err3 = norm(calculate('minus', X3, X))/sqrt(prod(X.size));
+Err4 = norm(calculate('minus', X4, X))/sqrt(prod(X.size));
+ 
+fprintf("HOSVD with rank [%d,%d,%d] achieve approximation error %d, relative error %d.\n",R(1),R(2),R(3),Err3,Err3);
+fprintf("HOOI with rank [%d,%d,%d] achieve approximation error %d, relative error %d.\n",R(1),R(2),R(3),Err4,Err4);
 
 % disply results with HOSVD and HOOI
 figure;
