@@ -17,8 +17,8 @@ classdef TKtensor
             if (nargin==0)
                 TK.core=tensor();
                 TK.factors = {};
-                TK.size = 0;
-                TK.rank = 0;
+                TK.size = [];
+                TK.rank = [];
                 return;
             end
             if(nargin==1&&isa(varargin{1},'TKtensor'))
