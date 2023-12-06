@@ -19,6 +19,7 @@ I = size(X);
 switch options.initialization
     case 'svd'
         G = SSVD(X, options.maxR);
+        G=TRtensor(G);
         G.factors{1}(2:options.maxR,:,:)=randn(options.maxR-1,I(1),size(G.factors{1},3));
         G.factors{N}(:,:,2:options.maxR)=randn(size(G.factors{N},1),I(N),options.maxR-1);
         G.rank(1)=options.maxR;
