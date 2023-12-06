@@ -14,12 +14,11 @@ if Qpause
     pause
 end
 
-%% test TRtensor(W,F)
+%% test TRtensor(F)
 clc
-disp('%%%%%%%%test TRtensor(core,F)%%%%%%%%');
+disp('%%%%%%%%test TRtensor(F)%%%%%%%%');
 d = [5,8,10];
 r = [4,2,3];
-core = tensor(rand(r));
 
 F = cell(3,1);
 for n=1:length(d)-1
@@ -36,7 +35,7 @@ if Qpause
     pause
 end
 
-%% test TRtensor(W,F1,F2,...,Fn)
+%% test TRtensor(F1,F2,...,Fn)
 clc
 disp('%%%%%%%%test TRtensor(core,F1,F2,...,Fn)%%%%%%%%');
 
