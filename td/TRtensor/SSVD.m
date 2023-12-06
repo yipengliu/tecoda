@@ -24,5 +24,5 @@ function [G,R] = SSVD(X,Rmax)
         M{i+1} = S(1:R(i+1),1:R(i+1))*V(:,1:R(i+1))';
     end
     G{N}(1:R(N),:,1:R(1)) = M{N}; 
-    G = TRtensor(G);
+    %G = TRtensor(G);
 end
