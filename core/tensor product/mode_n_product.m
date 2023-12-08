@@ -17,9 +17,16 @@ function Out = mode_n_product(T1, T2, varargin)
         tflag = 0;
     end
     
-    if nargin >= 3 && ischar(varargin{end}) && varargin{end} == 'T'
+    if nargin >= 3 && ischar(varargin{end}) 
+        if  varargin{end} == 'T'
         for i = 1 : length(T2)
         	T2{i} = T2{i}';
+        end
+        end
+         if  varargin{end} == 'H'
+        for i = 1 : length(T2)
+        	T2{i} =conj( T2{i})';
+        end
         end
         if nargin > 3
             mode = varargin{1:end-1};
