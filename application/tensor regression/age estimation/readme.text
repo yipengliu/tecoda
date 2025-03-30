@@ -1,0 +1,32 @@
+A comparison for tensor regression models on age estimation task.
+
+
+How to use
+
+Install Matlab tensor_toolbox.
+Download the release package and unzip it in the folder.
+Run the script demo.m in the Matlab environment.
+
+Data
+The data used for this group of experiments is extracted form the FG-NET dataset, the detailed processing steps refer to chapter tensor regression of our book.
+data/features_hog/datasetx.mat the predictor sized of N*944*4*8
+data/age.mat the response sized of N*1
+N is the sample number
+
+
+Documents
+demo.m demo script with section of different regression models.
+plot_result.m generate the Fig 7.10 in our book.
+
+Differetn methods:
+1. hrSTR,hrTRR,orTRR 
+   * all form the pachage "Tensor Regression" downloaded form "http://www.eecs.qmul.ac.uk/~ioannisp/source.htm"
+   * Reference:Weiwei Guo, Irene Kotsia and Ioannis Patras, "Tensor Learning for Regression", in IEEE Transactions on Image Processing, accepted for publication, 2011. 
+2. Remurs & Strum
+   *download form "http://staffwww.dcs.shef.ac.uk/people/H.Lu/" and extened into its t-svd version as Strum.
+   *References: Haiping Lu (2021). Regularized Multilinear Regression and Selection (Remurs) (https://www.mathworks.com/matlabcentral/fileexchange/71204-regularized-multilinear-regression-and-selection-remurs), MATLAB Central File Exchange. Retrieved July 8, 2021.
+                Song, X., & Lu, H. (2017, February). Multilinear regression for embedded feature selection with application to fmri analysis. In Thirty-first AAAI conference on artificial intelligence.
+                Li, W., Lou, J., Zhou, S., & Lu, H. (2019, October). Sturm: Sparse tubal-regularized multilinear regression for fmri. In International Workshop on Machine Learning in Medical Imaging (pp. 256-264). Springer, Cham.
+3. Surf 
+    * download form "https://github.com/LifangHe/NeurIPS18_SURF".
+    * Reference:He, L., Chen, K., Xu, W., Zhou, J., & Wang, F. (2018). Boosted Sparse and Low-Rank Tensor Regression. Advances in neural information processing systems, 31.
