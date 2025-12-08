@@ -5,14 +5,18 @@
 
 # TECODA
 
-**A Comprehensive MATLAB Library for Tensor Computing and Applications**
+**A Comprehensive MATLAB Library for Tensor Computation for Data Analysis**
 
 </div>
 <br>
 
 ## Overview
 
-**TECODA** (Tensor Computing and Data Analysis) is a comprehensive MATLAB library designed for researchers and practitioners working with multi-dimensional data. It provides:
+**TECODA** provides well-tested, modular implementations for the techniques in the book:
+
+Yipeng Liu, Jiani Liu, Zhen Long, Ce Zhu, Tensor Computation for Data Analysis, New York, USA: Springer, 2022. 
+
+**TECODA** is a comprehensive MATLAB library designed for researchers and practitioners working with multi-dimensional data. It provides:
 
 - **Core tensor operations** (tensor products, unfolding, etc.)
 - **Multiple tensor decomposition methods** (CP, Tucker, Tensor-Ring, T-SVD, BTD, and more)
@@ -20,7 +24,7 @@
 - **Real-world applications** including tensor completion, dictionary learning, regression, RPCA, and subspace clustering
 - **Benchmark datasets** for evaluation and testing
 
-Whether you're working on data recovery, pattern recognition, or advanced tensor analysis, TECODA provides well-tested, modular implementations.
+
 
 ---
 
