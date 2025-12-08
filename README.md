@@ -10,11 +10,12 @@
 </div>
 <br>
 
-## Overview
-
-**TECODA** provides well-tested, modular implementations for the techniques in the book:
+## software packages for the textbook:
 
 Yipeng Liu, Jiani Liu, Zhen Long, Ce Zhu, Tensor Computation for Data Analysis, New York, USA: Springer, 2022. 
+
+## Overview
+
 
 **TECODA** is a comprehensive MATLAB library designed for researchers and practitioners working with multi-dimensional data. It provides:
 
